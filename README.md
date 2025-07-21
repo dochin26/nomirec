@@ -47,6 +47,9 @@ renderにしてしまうと、SQLサーバーが１ヶ月しか持たないた�
 その影響でRails 8の仕様となるため技術検証をします。
 万が一、うまくいかない場合はrender + PosgreSQLに切り替えます。
 
+■ 画面遷移図
+Figma：https://www.figma.com/design/XdOvWPLQL387oqmSDMg3pX/%E7%84%A1%E9%A1%8C?node-id=0-1&p=f&t=XChY90JmrpAyE2Pe-0
+
 ■ 機能候補
 - ユーザー登録機能
 - ログイン機能
