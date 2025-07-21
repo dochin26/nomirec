@@ -51,7 +51,8 @@ renderにしてしまうと、SQLサーバーが１ヶ月しか持たないた�
 Figma：https://www.figma.com/design/XdOvWPLQL387oqmSDMg3pX/%E7%84%A1%E9%A1%8C?node-id=0-1&p=f&t=XChY90JmrpAyE2Pe-0
 
 ■ ER図
-![nomirec_drawio.png](https://gyazo.com/ed5d5ab9dcecfe9963192a06803d8010)
+
+![nomirec_drawio.png](https://i.gyazo.com/ed5d5ab9dcecfe9963192a06803d8010.png)
 
 ■ 機能候補
 - ユーザー登録機能
