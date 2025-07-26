@@ -52,7 +52,7 @@ Figma：https://www.figma.com/design/XdOvWPLQL387oqmSDMg3pX/%E7%84%A1%E9%A1%8C?n
 
 ■ ER図
 
-![nomirec_drawio.png](https://i.gyazo.com/ed5d5ab9dcecfe9963192a06803d8010.png)
+![nomirec_drawio.png](https://github.com/user-attachments/assets/74dddec4-259b-4b9f-887e-352a48cb0e82)
 
 ■ 機能候補
 - ユーザー登録機能
