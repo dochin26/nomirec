@@ -59,6 +59,7 @@ Figma：https://www.figma.com/design/XdOvWPLQL387oqmSDMg3pX/%E7%84%A1%E9%A1%8C?n
 - ログイン機能
 - ログアウト機能
 - 掲示板の CRUD（登録・参照・更新・削除）機能
+- 画像アップロード機能
 - 検索機能
 - 店舗登録
 - 店舗検索機能
@@ -113,4 +114,3 @@ PostgreSQL 16.9
 Google Cloud
 技術検証をして、難しそうなら
 Render
-
