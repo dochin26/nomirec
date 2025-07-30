@@ -1,0 +1,18 @@
+<!-- app/views/layouts/_navbar.html.erb -->
+<nav class="bg-[#6DAAFF] shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <!-- ロゴ -->
+      <div class="flex-shrink-0">
+        <%= link_to "🍺飲みREC🔴", root_path, class: "text-xl font-bold text-pink-600" %>
+      </div>
+
+      <!-- メニュー -->
+      <div class="md:flex space-x-4">
+        <%#= link_to "ホーム", root_path, class: "text-gray-700 hover:text-blue-600" %>
+        <%= link_to "新規登録", "#", class: "text-gray-700 hover:text-blue-600" %>
+        <%= link_to "ログイン", "#", class: "text-gray-700 hover:text-blue-600" %>
+      </div>
+    </div>
+  </div>
+</nav>
