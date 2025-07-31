@@ -66,12 +66,12 @@ Figma：https://www.figma.com/design/XdOvWPLQL387oqmSDMg3pX/%E7%84%A1%E9%A1%8C?n
 - 食物登録
 
 このうち運営が行う初期登録は、
-- 画像アップロード
 - 店舗登録
 - 酒登録
 - 食物登録
 
 ■ MVP後の実装方針予定
+- 画像アップロード機能
 - コメント機能（非 ajax）
 - 検索機能
 - google maps表示
