@@ -20,7 +20,11 @@
 
   <body>
     <%= render "layouts/header" %>
+    <div class="container mx-auto px-4 py-8">
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
       <%= yield %>
+      </div>
     <%= render "layouts/footer" %>
   </body>
 </html>
