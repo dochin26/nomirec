@@ -1,0 +1,24 @@
+<div class="container pt-3">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <!-- 検索フォーム -->
+      <form>
+        <div class="input-group mb-3"><input class="form-control" placeholder="検索ワード" type="search"/>
+          <div class="input-group-append"><input type="submit" value="検索" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"/></div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- 掲示板一覧 -->
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <% if @posts.present? %>
+          <%= render @posts %>
+        <% else %>
+          <div class="mb-3">掲示板がありません</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

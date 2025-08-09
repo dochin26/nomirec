@@ -1,0 +1,39 @@
+<div class="min-h-screen flex flex-col items-center justify-center">
+<%= form_with model: @post, class: "new_board" do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.fields_for :shop do |shop_fields| %>
+    <div class="mb-3">
+      <%= shop_fields.label :name %>
+      <%= shop_fields.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <div class="mb-3">
+      <%= shop_fields.label :introduction %>
+      <%= shop_fields.text_area :introduction, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", rows: "3" %>
+    </div>
+
+    <h4>Sakes</h4>
+    <%= shop_fields.fields_for :sakes do |sake_fields| %>
+      <div class="mb-3">
+        <%= sake_fields.label :name, "Sake Name" %>
+        <%= sake_fields.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      </div>
+    <% end %>
+
+    <h4>Foods</h4>
+    <%= shop_fields.fields_for :foods do |food_fields| %>
+      <div class="mb-3">
+        <%= food_fields.label :name, "Food Name" %>
+        <%= food_fields.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :comment %>
+    <%= f.text_area :comment, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+  </div>
+
+  <%= f.submit nil, class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" %>
+<% end %>
+</div>
