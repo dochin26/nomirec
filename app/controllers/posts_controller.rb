@@ -35,8 +35,8 @@ class PostsController < ApplicationController
       shop_attributes: [
         :name,
         :introduction,
-        sakes_attributes: [:name],
-        foods_attributes: [:name]
+        sakes_attributes: [ :name ],
+        foods_attributes: [ :name ]
       ]
     )
   end

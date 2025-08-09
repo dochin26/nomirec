@@ -6,6 +6,6 @@ class CreateShopSakes < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
-    add_index :shop_sakes, [:shop_id, :sake_id], unique: true
+    add_index :shop_sakes, [ :shop_id, :sake_id ], unique: true
   end
 end
