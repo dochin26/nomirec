@@ -12,7 +12,8 @@
         <% if user_signed_in? %>
           <%= link_to "探す", posts_path, class: "text-gray-700 hover:text-blue-600" %>
           <%= link_to "新規投稿", new_post_path, class: "text-gray-700 hover:text-blue-600" %>
-          <%= link_to "マイページ", '#', class: "text-gray-700 hover:text-blue-600" %>
+          <%#= link_to "マイページ", '#', class: "text-gray-700 hover:text-blue-600" %>
+          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-gray-700 hover:text-blue-600" %>
         <% else %>
           <%#= link_to "ホーム", root_path, class: "text-gray-700 hover:text-blue-600" %>
           <%= link_to "新規登録", new_user_registration_path, class: "text-gray-700 hover:text-blue-600" %>
