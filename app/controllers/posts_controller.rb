@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
+  before_action :set_post, only: [ :show, :edit, :update, :destroy ]
+  before_action :check_owner, only: [ :edit, :update, :destroy ]
 
   def index
-    @posts = Post.includes(:user)
+    @posts = Post.includes(:user, :shop)
   end
 
   def new
@@ -13,7 +15,11 @@ class PostsController < ApplicationController
   end
 
   def show
-    @posts = Post.includes(:user)
+  end
+
+  def edit
+    @post.shop.sakes.build if @post.shop.sakes.empty?
+    @post.shop.foods.build if @post.shop.foods.empty?
   end
 
   def create
@@ -26,17 +32,42 @@ class PostsController < ApplicationController
     end
   end
 
+  def update
+    if @post.update(post_params)
+      redirect_to posts_path, success: "Post updated successfully."
+    else
+      flash.now[:danger] = "Failed to update post."
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @post.destroy!
+    redirect_to posts_path, notice: "投稿を削除しました。"
+  rescue => e
+    redirect_to posts_path, alert: "削除に失敗しました: #{e.message}"
+  end
+
   private
+
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def check_owner
+    redirect_to posts_path, alert: "Access denied." unless @post.user == current_user
+  end
 
   def post_params
     params.require(:post).permit(
       :comment,
       :shop_id,
       shop_attributes: [
+        :id,
         :name,
         :introduction,
-        sakes_attributes: [ :name ],
-        foods_attributes: [ :name ]
+        sakes_attributes: [ :id, :name, :_destroy ],
+        foods_attributes: [ :id, :name, :_destroy ]
       ]
     )
   end
