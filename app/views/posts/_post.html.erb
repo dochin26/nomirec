@@ -1,25 +1,83 @@
-<div class="col-sm-12 col-lg-4 mb-3">
+<div class="col-sm-12 col-md-6 mb-4">
   <div id="post-id-<%= post.id %>">
-    <div class="card">
-      <%#= image_tag "board_placeholder.png", class: "card-img-top", width: "300", height:"200" %>
-      <div class="card-body">
-        <div class="d-flex">
-          <h4 class="card-title">
-            <%= link_to post.shop.name, '#' %>
+    <div class="card shadow-lg border-0 rounded-lg h-100">
+      <div class="card-body p-4">
+        <!-- Header with title and action buttons -->
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 class="card-title mb-0">
+            <% if current_user && current_user == post.user %>
+              <%= link_to post.shop.name, edit_post_path(post), class: "text-primary text-decoration-none fw-bold" %>
+            <% else %>
+              <%= link_to post.shop.name, post_path(post), class: "text-primary text-decoration-none fw-bold" %>
+            <% end %>
           </h4>
-          <div class='ms-auto'>
-            <%= link_to '#', id: 'button-edit-#{post.id}' do %>
-              <i class="bi bi-pencil-fill"></i>
-            <% end %>
-            <%= link_to '#', id: 'button-delete-#{post.id}', method: :delete, data: {confirm: ''} do %>
-              <i class="bi bi-trash-fill"></i>
-            <% end %>
+          <% if current_user && current_user == post.user %>
+            <div class="d-flex gap-2">
+              <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "btn btn-outline-primary btn-sm" do %>
+                <i class="bi bi-pencil-fill"></i>
+              <% end %>
+              <%= link_to post_path(post), id: "button-delete-#{post.id}", method: :delete, 
+                  data: { confirm: 'Are you sure you want to delete this post?' }, 
+                  class: "btn btn-outline-danger btn-sm" do %>
+                <i class="bi bi-trash-fill"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Shop Information -->
+        <div class="mb-3">
+          <div class="border rounded p-2 bg-light mb-2">
+            <small class="text-muted fw-semibold">店舗紹介</small>
+            <p class="mb-0 mt-1"><%= post.shop.introduction.present? ? post.shop.introduction : "紹介文がありません" %></p>
           </div>
         </div>
-        <ul class="list-inline">
-          <li><i class="bi bi-person"></i><%= post.shop.introduction %></li>
-          <li><i class="bi bi-calendar"></i><%= l post.created_at, format: :short %></li>
-        </ul>
+
+        <!-- Sakes Section -->
+        <% if post.shop.sakes.present? %>
+          <div class="mb-3">
+            <div class="border rounded p-2 bg-light">
+              <small class="text-muted fw-semibold">お酒</small>
+              <div class="mt-1">
+                <% post.shop.sakes.each_with_index do |sake, index| %>
+                  <span class="badge bg-secondary me-1 mb-1"><%= sake.name %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Foods Section -->
+        <% if post.shop.foods.present? %>
+          <div class="mb-3">
+            <div class="border rounded p-2 bg-light">
+              <small class="text-muted fw-semibold">料理</small>
+              <div class="mt-1">
+                <% post.shop.foods.each_with_index do |food, index| %>
+                  <span class="badge bg-success me-1 mb-1"><%= food.name %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Comment Section -->
+        <% if post.comment.present? %>
+          <div class="mb-3">
+            <div class="border rounded p-2 bg-light">
+              <small class="text-muted fw-semibold">コメント</small>
+              <p class="mb-0 mt-1"><%= post.comment %></p>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Footer with user and date -->
+        <div class="border-top pt-2 mt-3">
+          <small class="text-muted">
+            <i class="bi bi-person me-1"></i><%= post.user.name if post.user %>
+            <span class="ms-3"><i class="bi bi-calendar me-1"></i><%= l post.created_at, format: :short %></span>
+          </small>
+        </div>
       </div>
     </div>
   </div>

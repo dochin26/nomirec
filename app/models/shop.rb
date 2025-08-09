@@ -2,9 +2,9 @@ class Shop < ApplicationRecord
     validates :name, :introduction, presence: true
 
     has_many :posts
-    has_many :shop_sakes
+    has_many :shop_sakes, dependent: :destroy
     has_many :sakes, through: :shop_sakes
-    has_many :shop_foods
+    has_many :shop_foods, dependent: :destroy
     has_many :foods, through: :shop_foods
 
     accepts_nested_attributes_for :shop_sakes, allow_destroy: true

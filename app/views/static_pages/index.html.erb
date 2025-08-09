@@ -6,7 +6,6 @@
 
   <!-- ボタン縦並び用のラッパー -->
   <div class="flex flex-col items-center space-y-4">
-    <button class="h-12 rounded-md bg-blue-500 px-12 text-neutral-50 mb-12">お試し検索</button>
-    <button class="h-12 rounded-md bg-red-500 px-10 text-neutral-50">ユーザー登録</button>
+    <%= link_to "ユーザー登録", new_user_registration_path, class: 'h-12 rounded-md bg-red-500 px-10 text-neutral-50 flex items-center justify-center' %>
   </div>
 </div>
