@@ -62,3 +62,5 @@ gem "tailwindcss-ruby", "3.4.17"
 gem "devise"
 
 gem "dockerfile-rails", ">= 1.7", group: :development
+
+gem "mysql2"
