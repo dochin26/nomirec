@@ -1,9 +1,64 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# testユーザーを作成
+User.create(
+    name: "test",
+    email: "aaa@aaa.com",
+    password: "aaaaaa"
+)
+
+
+# 新規ユーザー２０人を作成
+1..20.times do |n|
+  name = Faker::Name.unique.name
+  email = Faker::Internet.email
+  password = "1234qwer"
+
+  User.create(
+    name: name,
+    email: email,
+    password: password
+  )
+end
+
+# 新規酒・料理を２０個ずつ作成
+20.times do |n|
+    sake = Faker::Beer.unique.name
+    food = Faker::Food.unique.dish
+    sake.gsub(" ", "")
+    food.gsub(" ", "")
+
+    Sake.create(
+        name: sake
+    )
+
+    Food.create(
+        name: food
+    )
+end
+
+# 新規店舗２０個、店舗に紐づく酒・料理、投稿を２０個ずつ作成
+20.times do |n|
+    sake_id = rand(20)
+    food_id = rand(20)
+    user_id = rand(20)
+
+    Shop.create(
+        name: Faker::Restaurant.name,
+        introduction: Faker::Lorem.characters(number: 16)
+    )
+
+    ShopSake.create(
+        shop_id: n,
+        sake_id: sake_id
+    )
+
+    ShopFood.create(
+        shop_id: n,
+        food_id: food_id
+    )
+
+    Post.create(
+        user_id: user_id,
+        shop_id: n,
+        comment: Faker::Restaurant.review
+    )
+end
