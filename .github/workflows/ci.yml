@@ -94,5 +94,4 @@ jobs:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
         run: |
-          bin/rails db:create db:schema:load
           bundle exec rspec
