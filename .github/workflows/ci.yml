@@ -89,7 +89,12 @@ jobs:
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
 
-      - name: Run test # RSpecを実行します。
+      - name: Precompile assets for test
+        env:
+          RAILS_ENV: test
+        run: bin/rails assets:precompile
+
+      - name: Run tests # RSpecを実行します。
         env:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
