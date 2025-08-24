@@ -75,12 +75,6 @@ jobs:
             sleep 2
           done
 
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: mysql2://root:password@127.0.0.1:3306/myapp_test
-        run: bin/rails db:test:prepare test test:system
-
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
         if: failure()
@@ -88,3 +82,15 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+
+      - name: Precompile assets for test
+        env:
+          RAILS_ENV: test
+        run: bin/rails assets:precompile
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          DB_HOST: 127.0.0.1
+        run: bundle exec rspec
+
