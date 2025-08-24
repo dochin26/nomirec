@@ -50,10 +50,27 @@ group :development do
   gem "web-console"
 end
 
-group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem "brakeman", require: false
+
+  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "rubocop-rails-omakase", require: false
+
+  # RSpec入れるぞ！
+  gem "rspec-rails"
+
+  # テスト用モデルデータ
+  gem "factory_bot_rails"
+
+  # シンプルカバレッジ測れるやつ
+  gem "simplecov"
+
   gem "capybara"
-  gem "selenium-webdriver"
+  gem "selenium-webdriver"  # ブラウザテスト用（必要に応じて）
 end
 
 gem "tailwindcss-rails"
