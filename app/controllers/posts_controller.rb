@@ -4,7 +4,8 @@ class PostsController < ApplicationController
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
   def index
-    @posts = Post.includes(:user, :shop)
+    @q = Post.ransack(params[:q])
+    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods ])
   end
 
   def new

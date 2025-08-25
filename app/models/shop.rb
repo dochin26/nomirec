@@ -15,6 +15,14 @@ class Shop < ApplicationRecord
     before_validation :find_or_assign_existing_sakes
     before_validation :find_or_assign_existing_foods
 
+    def self.ransackable_attributes(auth_object = nil)
+        %w[id name introduction created_at updated_at]
+    end
+
+    def self.ransackable_associations(auth_object = nil)
+        %w[posts sakes foods]
+    end
+
     private
 
     def find_or_assign_existing_sakes

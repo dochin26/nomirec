@@ -8,6 +8,14 @@ class Post < ApplicationRecord
 
     after_destroy :destroy_shop
 
+    def self.ransackable_attributes(auth_object = nil)
+        %w[id created_at updated_at shop_id user_id]
+    end
+
+    def self.ransackable_associations(auth_object = nil)
+        %w[shop user]
+    end
+
     private
 
     def destroy_shop
