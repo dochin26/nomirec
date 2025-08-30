@@ -26,7 +26,8 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
-      redirect_to posts_path, success: "Post created successfully."
+      flash[:success] = "Post created successfully."
+      redirect_to posts_path
     else
       flash.now[:danger] = "Failed to create post."
       render :new, status: :unprocessable_entity
@@ -35,7 +36,8 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      redirect_to posts_path, success: "Post updated successfully."
+      flash[:success] = "Post updated successfully."
+      redirect_to posts_path
     else
       flash.now[:danger] = "Failed to update post."
       render :edit, status: :unprocessable_entity
