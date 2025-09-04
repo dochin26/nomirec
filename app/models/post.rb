@@ -8,6 +8,8 @@ class Post < ApplicationRecord
 
     after_destroy :destroy_shop
 
+  has_one_attached :body_image
+
     def self.ransackable_attributes(auth_object = nil)
         %w[id created_at updated_at shop_id user_id]
     end

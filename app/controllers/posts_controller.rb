@@ -65,6 +65,7 @@ class PostsController < ApplicationController
     params.require(:post).permit(
       :comment,
       :shop_id,
+      :body_image,
       shop_attributes: [
         :id,
         :name,
