@@ -83,3 +83,4 @@ gem "dockerfile-rails", ">= 1.7", group: :development
 gem "mysql2"
 gem "faker"
 gem "ransack"
+gem "aws-sdk-s3"
