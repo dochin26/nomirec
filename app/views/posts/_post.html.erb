@@ -11,6 +11,9 @@
               <%= link_to post.shop.name, post_path(post), class: "text-primary text-decoration-none fw-bold" %>
             <% end %>
           </h4>
+          <% if post.body_image.attached? %>
+            <%= image_tag post.body_image, class: "w-64 h-auto" %>
+          <% end %>
           <% if current_user && current_user == post.user %>
             <div class="d-flex gap-2">
               <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "btn btn-outline-primary btn-sm" do %>
