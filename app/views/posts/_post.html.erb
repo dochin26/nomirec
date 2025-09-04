@@ -12,7 +12,7 @@
             <% end %>
           </h4>
           <% if post.body_image.attached? %>
-            <%= image_tag post.body_image, class: "w-64 h-auto" %>
+            <%= image_tag url_for(post.body_image), class: "w-64 h-auto" %>
           <% end %>
           <% if current_user && current_user == post.user %>
             <div class="d-flex gap-2">
