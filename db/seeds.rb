@@ -1,3 +1,10 @@
+# Fakerのリセット
+Faker::Beer.unique.clear
+Faker::Food.unique.clear
+Faker::Name.unique.clear
+Faker::Address.unique.clear
+Faker::Restaurant.unique.clear
+
 # testユーザーを作成
 User.create(
     name: "test",
@@ -54,6 +61,11 @@ end
     ShopFood.create(
         shop_id: n,
         food_id: food_id
+    )
+
+    ShopPlace.create(
+        shop_id: n,
+        address: Faker::Address.unique.state
     )
 
     Post.create(
