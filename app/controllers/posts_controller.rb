@@ -13,6 +13,7 @@ class PostsController < ApplicationController
     @post.build_shop
     @post.shop.sakes.build
     @post.shop.foods.build
+    @post.shop.shop_places.build
   end
 
   def show
@@ -21,6 +22,7 @@ class PostsController < ApplicationController
   def edit
     @post.shop.sakes.build if @post.shop.sakes.empty?
     @post.shop.foods.build if @post.shop.foods.empty?
+    @post.shop.shop_places.build if @post.shop.shop_places.empty?
   end
 
   def create
@@ -71,7 +73,8 @@ class PostsController < ApplicationController
         :name,
         :introduction,
         sakes_attributes: [ :id, :name, :_destroy ],
-        foods_attributes: [ :id, :name, :_destroy ]
+        foods_attributes: [ :id, :name, :_destroy ],
+        shop_places_attributes: [ :id, :address, :_destroy ]
       ]
     )
   end

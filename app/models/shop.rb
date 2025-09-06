@@ -6,11 +6,13 @@ class Shop < ApplicationRecord
     has_many :sakes, through: :shop_sakes
     has_many :shop_foods, dependent: :destroy
     has_many :foods, through: :shop_foods
+    has_many :shop_places, dependent: :destroy
 
     accepts_nested_attributes_for :shop_sakes, allow_destroy: true
     accepts_nested_attributes_for :shop_foods, allow_destroy: true
     accepts_nested_attributes_for :sakes
     accepts_nested_attributes_for :foods
+    accepts_nested_attributes_for :shop_places
 
     before_validation :find_or_assign_existing_sakes
     before_validation :find_or_assign_existing_foods

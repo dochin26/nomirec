@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_31_063838) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_06_043812) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -73,6 +73,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_31_063838) do
     t.index ["shop_id"], name: "index_shop_foods_on_shop_id"
   end
 
+  create_table "shop_places", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "shop_id", null: false
+    t.integer "latitude"
+    t.integer "longitude"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shop_id"], name: "index_shop_places_on_shop_id"
+  end
+
   create_table "shop_sakes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "shop_id", null: false
     t.bigint "sake_id", null: false
@@ -107,6 +117,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_31_063838) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "shop_foods", "foods"
   add_foreign_key "shop_foods", "shops"
+  add_foreign_key "shop_places", "shops"
   add_foreign_key "shop_sakes", "sakes"
   add_foreign_key "shop_sakes", "shops"
 end
