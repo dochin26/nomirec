@@ -15,8 +15,10 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= include_gon %>
     <%= javascript_include_tag "turbo", type: "module" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%=javascript_include_tag "map" %>
   </head>
 
   <body>

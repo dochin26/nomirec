@@ -4,9 +4,12 @@ class PostsController < ApplicationController
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
   def index
+    @api_key = Rails.application.credentials.googlemaps[:api_key]
     @q = Post.ransack(params[:q])
-    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods ])
-  end
+    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods, :shop_places ])
+
+    gon.addresses = @addresses
+    end
 
   def new
     @post = Post.new
