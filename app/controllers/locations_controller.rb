@@ -4,6 +4,8 @@ class LocationsController < ApplicationController
     @address = normalize_address(raw_address)
     @api_key = Rails.application.credentials.googlemaps[:api_key]
 
+    puts(@address)
+
     # デバッグ用
     Rails.logger.info "正規化前の住所: #{raw_address}"
     Rails.logger.info "正規化後の住所: #{@address}"

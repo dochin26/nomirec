@@ -1,6 +1,318 @@
 {
   "RSpec": {
-    "coverage": {},
-    "timestamp": 1758103721
+    "coverage": {
+      "/myapp/app/models/user.rb": {
+        "lines": [
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null
+        ]
+      },
+      "/myapp/app/models/application_record.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "/myapp/app/helpers/application_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/myapp/app/helpers/locations_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/myapp/app/helpers/posts_helper.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null,
+          null,
+          0,
+          null,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/helpers/static_pages_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
+      "/myapp/app/models/shop_place.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "/myapp/app/controllers/posts_controller.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          7,
+          7,
+          7,
+          null,
+          7,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          0,
+          null,
+          null,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/controllers/application_controller.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          null,
+          1,
+          5,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/models/post.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          null,
+          1,
+          null,
+          1,
+          224,
+          null,
+          null,
+          1,
+          522,
+          null,
+          null,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/models/shop.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          219,
+          null,
+          null,
+          1,
+          410,
+          null,
+          null,
+          1,
+          null,
+          1,
+          4,
+          1,
+          1,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null,
+          1,
+          4,
+          1,
+          1,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/models/shop_sake.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/myapp/app/models/sake.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          29,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/models/shop_food.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/myapp/app/models/food.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          29,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
+      },
+      "/myapp/app/controllers/static_pages_controller.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null
+        ]
+      }
+    },
+    "timestamp": 1759114428
   }
 }
