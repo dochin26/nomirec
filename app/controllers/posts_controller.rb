@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
   def index
-    @api_key = Rails.application.credentials.googlemaps[:api_key]
+    @api_key = Rails.application.credentials.dig(:googlemaps, :api_key)
     @q = Post.ransack(params[:q])
     @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods, :shop_places ])
 
@@ -30,10 +30,6 @@ class PostsController < ApplicationController
     @post.shop.shop_places.build if @post.shop.shop_places.empty?
     @address = @post.shop.shop_places.pluck(:address).to_s
     gon.addresses = @address
-
-    puts("@postの中身ここから------------------------")
-    puts(@address)
-    puts("@postの中身ここまで------------------------")
   end
 
   def create
