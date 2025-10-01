@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_06_043812) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_13_075848) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -75,8 +75,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_06_043812) do
 
   create_table "shop_places", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "shop_id", null: false
-    t.integer "latitude"
-    t.integer "longitude"
+    t.float "latitude"
+    t.float "longitude"
     t.string "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

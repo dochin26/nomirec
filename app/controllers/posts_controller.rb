@@ -4,9 +4,12 @@ class PostsController < ApplicationController
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
   def index
+    @api_key = Rails.application.credentials.dig(:googlemaps, :api_key)
     @q = Post.ransack(params[:q])
-    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods ])
-  end
+    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods, :shop_places ])
+
+    gon.addresses = @addresses
+    end
 
   def new
     @post = Post.new
@@ -17,12 +20,16 @@ class PostsController < ApplicationController
   end
 
   def show
+    @address = @post.shop.shop_places.pluck(:address).to_s
+    gon.addresses = @address
   end
 
   def edit
     @post.shop.sakes.build if @post.shop.sakes.empty?
     @post.shop.foods.build if @post.shop.foods.empty?
     @post.shop.shop_places.build if @post.shop.shop_places.empty?
+    @address = @post.shop.shop_places.pluck(:address).to_s
+    gon.addresses = @address
   end
 
   def create

@@ -84,3 +84,7 @@ gem "mysql2"
 gem "faker"
 gem "ransack"
 gem "aws-sdk-s3"
+gem "geocoder"
+gem "gmaps4rails"
+
+gem "gon"

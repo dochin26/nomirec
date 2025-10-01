@@ -21,6 +21,9 @@
           <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
             <%= place.address %>
           </div>
+          <% place.address = @address %>
+          <label class="block text-sm font-medium text-gray-700 mt-4">Map</label>
+          <div id="map" style="height: 400px; width: 100%;" class="mb-4"></div>
         </div>
       <% end %>
 
