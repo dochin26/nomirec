@@ -43,11 +43,6 @@
               <div class="mt-1">
                 <% post.shop.shop_places.each_with_index do |place, index| %>
                   <span id="" class="badge bg-success me-1 mb-1"><%= place.address %></span>
-                  <% place.address = @addresses %>
-                  <div id="map" style="height: 400px; width: 100%;"></div>
-                <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=<%= @api_key %>&callback=initMap">
-        </script>
                 <% end %>
               </div>
             </div>

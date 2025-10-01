@@ -20,12 +20,20 @@ class PostsController < ApplicationController
   end
 
   def show
+    @address = @post.shop.shop_places.pluck(:address).to_s
+    gon.addresses = @address
   end
 
   def edit
     @post.shop.sakes.build if @post.shop.sakes.empty?
     @post.shop.foods.build if @post.shop.foods.empty?
     @post.shop.shop_places.build if @post.shop.shop_places.empty?
+    @address = @post.shop.shop_places.pluck(:address).to_s
+    gon.addresses = @address
+
+    puts("@postの中身ここから------------------------")
+    puts(@address)
+    puts("@postの中身ここまで------------------------")
   end
 
   def create
