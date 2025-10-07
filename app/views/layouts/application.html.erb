@@ -21,19 +21,21 @@
     <%= include_gon %>
   </head>
 
-  <body>
+  <body class="flex flex-col h-screen overflow-hidden">
     <%= render "layouts/header" %>
-    <div class="container mx-auto px-4 py-8">
-      <% flash.each do |key, message| %>
-        <div class="mb-4 p-4 rounded-lg 
-                    <%= key == "success" ? "bg-green-100 text-green-800" : 
-                        key == "notice" ? "bg-blue-100 text-blue-800" : 
-                        "bg-red-100 text-red-800" %>">
-          <%= message %>
-        </div>
-      <% end %>
-      <%= yield %>
+    <main class="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 via-white to-pink-50" style="margin-top: calc(4rem + env(safe-area-inset-top)); padding-bottom: calc(6rem + env(safe-area-inset-bottom));">
+      <div class="container mx-auto px-4 py-4 min-h-full">
+        <% flash.each do |key, message| %>
+          <div class="mb-4 p-4 rounded-lg
+                      <%= key == "success" ? "bg-green-100 text-green-800" :
+                          key == "notice" ? "bg-blue-100 text-blue-800" :
+                          "bg-red-100 text-red-800" %>">
+            <%= message %>
+          </div>
+        <% end %>
+        <%= yield %>
       </div>
+    </main>
     <%= render "layouts/footer" %>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>&callback=initMap"></script>
   </body>
