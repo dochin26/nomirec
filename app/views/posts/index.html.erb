@@ -1,21 +1,12 @@
-<div class="container pt-3">
-  <div class="row">
-    <div class="col-lg-10 offset-lg-1">
-      <!-- 検索フォーム -->
-    </div>
-  </div>
-  
+<div class="container mx-auto px-4 pt-3">
   <%= render 'search', q: @q, url: posts_path %>
+
   <!-- 掲示板一覧 -->
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <% if @posts.present? %>
-          <%= render @posts %>
-        <% else %>
-          <div class="mb-3">掲示板がありません</div>
-        <% end %>
-      </div>
-    </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <% if @posts.present? %>
+      <%= render @posts %>
+    <% else %>
+      <div class="col-span-2 text-center text-gray-500">掲示板がありません</div>
+    <% end %>
   </div>
 </div>

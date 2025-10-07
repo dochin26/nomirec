@@ -1,11 +1,73 @@
-<div class="min-h-screen flex flex-col items-center justify-center">
-  <%= image_tag 'top_nomi.jpg' %>
+<div class="min-h-full flex flex-col items-center justify-center py-12 px-4">
+  <!-- ヒーローセクション -->
+  <div class="max-w-6xl mx-auto text-center space-y-8">
+    <!-- メインビジュアル -->
+    <div class="relative max-w-3xl mx-auto">
+      <%= image_tag 'top_nomi.jpg', class: 'w-full rounded-3xl shadow-2xl' %>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-3xl pointer-events-none"></div>
+    </div>
 
-  <h1 class="text-center font-bold text-4xl text-orange-500 mt-6 mb-2">さあ、</h1>
-  <h1 class="text-center font-bold text-4xl text-orange-500 mb-10">飲食の個性を楽しもう</h1>
+    <!-- キャッチコピー -->
+    <div class="space-y-4">
+      <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
+        珍酒 × 珍味
+      </h1>
+      <p class="text-2xl md:text-3xl font-semibold text-gray-700">
+        個性あるお店を共有しよう！
+      </p>
+    </div>
 
-  <!-- ボタン縦並び用のラッパー -->
-  <div class="flex flex-col items-center space-y-4">
-    <%= link_to "ユーザー登録", new_user_registration_path, class: 'h-12 rounded-md bg-red-500 px-10 text-neutral-50 flex items-center justify-center' %>
+    <!-- サービス説明 -->
+    <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 space-y-4">
+      <p class="text-lg text-gray-700 leading-relaxed">
+        レア度の高いお酒や珍しい料理を扱うお店を記録・共有するアプリケーションです。
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 pt-4">
+        <span class="px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">ヒューガルデン</span>
+        <span class="px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium">ワニの唐揚げ</span>
+        <span class="px-4 py-2 bg-pink-100 text-pink-700 rounded-full text-sm font-medium">郷土料理</span>
+        <span class="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">洋酒・日本酒</span>
+      </div>
+    </div>
+
+    <!-- 特徴セクション -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 max-w-5xl mx-auto">
+      <div class="bg-white rounded-xl shadow-md p-6 space-y-3 hover:shadow-xl transition-shadow">
+        <div class="text-4xl">🍶</div>
+        <h3 class="text-xl font-bold text-gray-800">珍しいお酒</h3>
+        <p class="text-gray-600 text-sm">レア度の高い洋酒や日本酒を扱うお店を発見</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 space-y-3 hover:shadow-xl transition-shadow">
+        <div class="text-4xl">🍖</div>
+        <h3 class="text-xl font-bold text-gray-800">個性的な料理</h3>
+        <p class="text-gray-600 text-sm">珍味や郷土料理など個性ある逸品との出会い</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 space-y-3 hover:shadow-xl transition-shadow">
+        <div class="text-4xl">📍</div>
+        <h3 class="text-xl font-bold text-gray-800">お気に入り記録</h3>
+        <p class="text-gray-600 text-sm">気に入ったお店を記録して、いつでも振り返り</p>
+      </div>
+    </div>
+
+    <!-- CTAボタン -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+      <% if user_signed_in? %>
+        <%= link_to posts_path, class: "w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 text-center" do %>
+          <span class="text-lg">お店を探す</span>
+        <% end %>
+        <%= link_to new_post_path, class: "w-full sm:w-auto px-8 py-4 bg-white border-2 border-orange-500 text-orange-500 font-bold rounded-xl shadow-md hover:bg-orange-50 transition-all duration-200 text-center" do %>
+          <span class="text-lg">お店を登録する</span>
+        <% end %>
+      <% else %>
+        <%= link_to new_user_registration_path, class: "w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 text-center" do %>
+          <span class="text-lg">無料で始める</span>
+        <% end %>
+        <%= link_to new_user_session_path, class: "w-full sm:w-auto px-8 py-4 bg-white border-2 border-orange-500 text-orange-500 font-bold rounded-xl shadow-md hover:bg-orange-50 transition-all duration-200 text-center" do %>
+          <span class="text-lg">ログイン</span>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

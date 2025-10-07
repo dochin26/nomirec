@@ -59,7 +59,7 @@
     </div>
 
     <% if @post.body_image.attached? %>
-      <%= image_tag image_url_for(post.body_image), class: "w-64 h-auto" %>
+      <%= image_tag image_url_for(@post.body_image), class: "w-64 h-auto" %>
     <% end %>
 
     <!-- Buttons -->
