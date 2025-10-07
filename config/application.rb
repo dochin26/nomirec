@@ -26,7 +26,7 @@ module Myapp
 
     # i18n設定
     config.i18n.default_locale = :ja
-    config.i18n.available_locales = [:ja, :en]
+    config.i18n.available_locales = [ :ja, :en ]
 
     Faker::Config.locale = "ja"
   end
