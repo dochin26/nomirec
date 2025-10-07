@@ -1,0 +1,83 @@
+ja:
+  app_name: "NomireQ"
+
+  # 共通
+  common:
+    search: "検索"
+    back: "戻る"
+    edit: "編集"
+    delete: "削除"
+    confirm_delete: "本当に削除しますか？"
+    login: "ログイン"
+    logout: "ログアウト"
+    register: "新規登録"
+
+  # トップページ
+  top:
+    title: "珍酒 × 珍味"
+    subtitle: "個性あるお店を共有しよう！"
+    description: "レア度の高いお酒や珍しい料理を扱うお店を記録・共有するアプリケーションです。"
+    start_free: "無料で始める"
+    explore: "お店を探す"
+    add_shop: "お店を登録する"
+
+    features:
+      rare_sake:
+        title: "珍しいお酒"
+        description: "レア度の高い洋酒や日本酒を扱うお店を発見"
+      unique_food:
+        title: "個性的な料理"
+        description: "珍味や郷土料理など個性ある逸品との出会い"
+      favorite:
+        title: "お気に入り記録"
+        description: "気に入ったお店を記録して、いつでも振り返り"
+
+  # 投稿
+  posts:
+    no_posts: "掲示板がありません"
+    search_placeholder: "店名・お酒・料理で検索"
+    search_example: "例:"
+    created: "投稿を作成しました。"
+    updated: "投稿を更新しました。"
+    destroyed: "投稿を削除しました。"
+    create_failed: "投稿の作成に失敗しました。"
+    update_failed: "投稿の更新に失敗しました。"
+    destroy_failed: "削除に失敗しました: %{error}"
+    access_denied: "アクセスが拒否されました。"
+
+  # 投稿詳細
+  post:
+    shop_introduction: "店舗紹介"
+    no_introduction: "紹介文がありません"
+    address: "住所"
+    sake: "お酒"
+    food: "料理"
+    comment: "コメント"
+
+  # 認証
+  auth:
+    login_title: "ログイン"
+    login_subtitle: "アカウントにログイン"
+    email: "メールアドレス"
+    password: "パスワード"
+    password_confirmation: "パスワード確認"
+    remember_me: "ログイン状態を保持する"
+    new_password: "新しいパスワード"
+
+    password_reset:
+      title: "パスワードリセット"
+      subtitle: "パスワードをお忘れですか？"
+      send_button: "パスワードリセットメールを送信"
+
+    password_change:
+      title: "パスワード変更"
+      subtitle: "新しいパスワードを設定してください"
+      change_button: "パスワードを変更"
+      min_characters: "文字以上"
+
+
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"
+      long: "%Y年%m月%d日 %H時%M分"

@@ -13,7 +13,7 @@ RSpec.describe "Posts", type: :system do
     fill_in "コメント", with: "盛りがよくて、値段もリーズナブル。脂多めにすると、かなりコッテリになるので要注意です。"
     click_button "投稿する"
 
-    expect(page).to have_content("Post created successfully.")
+    expect(page).to have_content("投稿を作成しました。")
   end
 
   it "店名の検索ができる" do

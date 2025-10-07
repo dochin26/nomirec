@@ -437,6 +437,7 @@ DEPENDENCIES
   geocoder
   gmaps4rails
   gon
+  i18n
   jbuilder
   jsbundling-rails
   letter_opener_web
