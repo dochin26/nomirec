@@ -11,7 +11,7 @@ RSpec.describe "UserAuthentication", type: :system do
     fill_in "パスワード確認", with: "password"
     click_button "新規登録"
 
-    expect(page).to have_content("Welcome! You have signed up successfully.") # Deviseのflashメッセージ
+    expect(page).to have_content("アカウント登録が完了しました。") # Deviseのflashメッセージ
   end
 
   it "ログインできる" do
@@ -20,7 +20,7 @@ RSpec.describe "UserAuthentication", type: :system do
     fill_in "パスワード", with: user.password
     click_button "ログイン"
 
-    expect(page).to have_content("Signed in successfully.")
+    expect(page).to have_content("ログインしました。")
   end
 
   it "ログアウトできる" do
@@ -29,6 +29,6 @@ RSpec.describe "UserAuthentication", type: :system do
     visit root_path
     click_link "ログアウト" # ナビゲーションにあるリンク名に合わせて修正
 
-    expect(page).to have_content("Signed out successfully.")
+    expect(page).to have_content("ログアウトしました。")
   end
 end
