@@ -4,9 +4,9 @@
       <!-- タイトル -->
       <div class="text-center space-y-2">
         <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
-          パスワードリセット
+          <%= t('auth.password_reset.title') %>
         </h1>
-        <p class="text-gray-500 text-sm">パスワードをお忘れですか？</p>
+        <p class="text-gray-500 text-sm"><%= t('auth.password_reset.subtitle') %></p>
       </div>
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, html: { class: "space-y-5" }) do |f| %>
@@ -14,7 +14,7 @@
 
         <!-- メールアドレス -->
         <div class="space-y-2">
-          <%= f.label :email, "メールアドレス", class: "block text-sm font-semibold text-gray-700" %>
+          <%= f.label :email, t('auth.email'), class: "block text-sm font-semibold text-gray-700" %>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,7 +27,7 @@
 
         <!-- 送信ボタン -->
         <div>
-          <%= f.submit "パスワードリセットメールを送信", class: "w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5" %>
+          <%= f.submit t('auth.password_reset.send_button'), class: "w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5" %>
         </div>
 
         <!-- リンク -->

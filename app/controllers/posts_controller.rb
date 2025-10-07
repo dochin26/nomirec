@@ -35,29 +35,29 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
-      flash[:success] = "Post created successfully."
+      flash[:success] = t('posts.created')
       redirect_to posts_path
     else
-      flash.now[:danger] = "Failed to create post."
+      flash.now[:danger] = t('posts.create_failed')
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
     if @post.update(post_params)
-      flash[:success] = "Post updated successfully."
+      flash[:success] = t('posts.updated')
       redirect_to posts_path
     else
-      flash.now[:danger] = "Failed to update post."
+      flash.now[:danger] = t('posts.update_failed')
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @post.destroy!
-    redirect_to posts_path, notice: "投稿を削除しました。"
+    redirect_to posts_path, notice: t('posts.destroyed')
   rescue => e
-    redirect_to posts_path, alert: "削除に失敗しました: #{e.message}"
+    redirect_to posts_path, alert: t('posts.destroy_failed', error: e.message)
   end
 
   private
@@ -67,7 +67,7 @@ class PostsController < ApplicationController
   end
 
   def check_owner
-    redirect_to posts_path, alert: "Access denied." unless @post.user == current_user
+    redirect_to posts_path, alert: t('posts.access_denied') unless @post.user == current_user
   end
 
   def post_params

@@ -91,3 +91,5 @@ gem "gmaps4rails"
 
 gem "gon"
 gem "config"
+
+gem "i18n"
