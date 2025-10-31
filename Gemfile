@@ -57,13 +57,14 @@ group :development, :test do
   # テスト用モデルデータ
   gem "factory_bot_rails"
 
-  # シンプルカバレッジ測れるやつ
+  # シンプルカバレッジ測れる
   gem "simplecov"
 
   gem "capybara"
   gem "selenium-webdriver"  # ブラウザテスト用（必要に応じて）
 end
 
+# Tailwind CSSをRailsで使うため
 gem "tailwindcss-rails"
 gem "tailwindcss-ruby", "3.4.17"
 
@@ -71,17 +72,32 @@ gem "devise"
 
 gem "dockerfile-rails", ">= 1.7", group: :development
 
+# MySQLライブラリ
 gem "mysql2"
+
+# ダミーデータ生成
 gem "faker"
+
+# 検索機能
 gem "ransack"
+
+# AWS S3連携
 gem "aws-sdk-s3"
+
+# 位置情報関連
 gem "geocoder"
 gem "gmaps4rails"
 
+# JavaScriptとRailsの橋渡し
 gem "gon"
 gem "config"
 
+# 国際化対応
 gem "i18n"
 
+# Omniauth Google OAuth2認証
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
+
+# ページネーション
+gem "kaminari"
