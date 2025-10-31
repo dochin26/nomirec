@@ -3,10 +3,12 @@ class PostsController < ApplicationController
   before_action :set_post, only: [ :show, :edit, :update, :destroy ]
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
+  POST_COUNT = 10
+
   def index
     @api_key = Rails.application.credentials.dig(:googlemaps, :api_key)
     @q = Post.ransack(params[:q])
-    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods, :shop_places ])
+    @posts = @q.result(distinct: true).includes(:shop, shop: [ :sakes, :foods, :shop_places ]).page(params[:page]).per(POST_COUNT)
 
     gon.addresses = @addresses
     end
