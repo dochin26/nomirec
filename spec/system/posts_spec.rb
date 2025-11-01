@@ -22,7 +22,7 @@ RSpec.describe "Posts", type: :system do
     create_post_with_relations(user: user)
 
     visit posts_path
-    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_cont", with: "ラーメン二郎"
+    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont", with: "ラーメン二郎"
     click_button "検索"
 
     expect(page).to have_content("市川海老蔵似のイケメン店主。豚ポタスープが特徴。")
@@ -34,7 +34,7 @@ RSpec.describe "Posts", type: :system do
     create_post_with_relations(user: user)
 
     visit posts_path
-    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_cont", with: "キリンビール"
+    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont", with: "キリンビール"
     click_button "検索"
 
     expect(page).to have_content("ラーメン二郎ひばりヶ丘店")
@@ -46,7 +46,7 @@ RSpec.describe "Posts", type: :system do
     create_post_with_relations(user: user)
 
     visit posts_path
-    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_cont", with: "ラーメン"
+    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont", with: "ラーメン"
     click_button "検索"
 
     expect(page).to have_content("キリンビール")
