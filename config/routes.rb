@@ -6,5 +6,8 @@ Rails.application.routes.draw do
   }
   root "static_pages#index"
   resources :posts, only: %i[index new show edit create update destroy]
+  resources :shops, only: [ :index, :show, :edit, :create, :update, :destroy ] do
+    resources :likes, only: [ :create, :destroy ]
+  end
   get "location", to: "locations#show"
 end

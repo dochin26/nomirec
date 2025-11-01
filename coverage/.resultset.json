@@ -11,6 +11,7 @@
           null,
           null,
           1,
+          1,
           null,
           1,
           0,
@@ -38,6 +39,12 @@
           null
         ]
       },
+      "/myapp/app/helpers/likes_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
       "/myapp/app/helpers/posts_helper.rb": {
         "lines": [
           1,
@@ -58,6 +65,16 @@
       },
       "/myapp/app/helpers/static_pages_helper.rb": {
         "lines": [
+          1,
+          null
+        ]
+      },
+      "/myapp/app/models/like.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
           1,
           null
         ]
@@ -240,6 +257,7 @@
           1,
           1,
           1,
+          1,
           null,
           1,
           null,
@@ -283,6 +301,11 @@
           null,
           null,
           1,
+          null,
+          null,
+          null,
+          1,
+          7,
           null,
           null
         ]
@@ -398,6 +421,6 @@
         ]
       }
     },
-    "timestamp": 1761980420
+    "timestamp": 1762009869
   }
 }

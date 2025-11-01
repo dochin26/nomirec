@@ -72,6 +72,11 @@
       <%= image_tag image_url_for(@post.body_image), class: "w-64 h-auto" %>
     <% end %>
 
+    <!-- いいねボタン -->
+    <div class="mb-4 flex justify-center">
+      <%= render 'likes/like_button', shop: @post.shop %>
+    </div>
+
     <!-- Buttons -->
     <div class="flex justify-between pt-4 border-t">
       <%= link_to "戻る", posts_path,

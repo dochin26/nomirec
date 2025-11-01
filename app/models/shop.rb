@@ -7,6 +7,7 @@ class Shop < ApplicationRecord
     has_many :shop_foods, dependent: :destroy
     has_many :foods, through: :shop_foods
     has_many :shop_places, dependent: :destroy
+    has_many :likes, dependent: :destroy
 
     accepts_nested_attributes_for :shop_places
 
@@ -50,5 +51,10 @@ class Shop < ApplicationRecord
 
         # 既存の関連を完全に置き換え
         self.food_ids = new_food_ids
+    end
+
+    # ユーザーがこの店をいいねしているかどうか
+    def liked_by?(user)
+        likes.exists?(user_id: user.id)
     end
 end

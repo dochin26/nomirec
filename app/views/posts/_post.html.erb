@@ -119,6 +119,11 @@
           <span><%= l post.created_at, format: :short %></span>
         </div>
       </div>
+
+      <!-- いいねボタン -->
+      <div class="pt-3">
+        <%= render 'likes/like_button', shop: post.shop %>
+      </div>
     </div>
   </div>
 </div>

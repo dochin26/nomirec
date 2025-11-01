@@ -6,6 +6,7 @@ class User < ApplicationRecord
         :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
   has_many :posts, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
