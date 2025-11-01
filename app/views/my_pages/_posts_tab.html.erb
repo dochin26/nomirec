@@ -1,0 +1,20 @@
+<% if posts.any? %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% posts.each do |post| %>
+      <%= render 'posts/post', post: post %>
+    <% end %>
+  </div>
+
+  <!-- ページネーション -->
+  <div class="mt-8 flex justify-center">
+    <%= paginate posts, param_name: :posts_page %>
+  </div>
+<% else %>
+  <div class="text-center py-16">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+    <p class="mt-4 text-gray-500 text-lg">まだ投稿がありません</p>
+    <%= link_to '最初の投稿を作成', new_post_path, class: 'mt-4 inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold rounded-full hover:shadow-lg transition-all' %>
+  </div>
+<% end %>
