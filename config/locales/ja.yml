@@ -54,6 +54,18 @@ ja:
     food: "料理"
     comment: "コメント"
 
+  # マイページ
+  my_page:
+    title: "%{name}さんのマイページ"
+    posts_tab: "投稿"
+    likes_tab: "いいね"
+    no_posts: "まだ投稿がありません"
+    no_likes: "まだいいねしたお店がありません"
+    create_first_post: "最初の投稿を作成"
+    view_posts: "投稿を見る"
+    posts_count: "%{count}件"
+    likes_count: "%{count}件"
+
   # 認証
   auth:
     login_title: "ログイン"
