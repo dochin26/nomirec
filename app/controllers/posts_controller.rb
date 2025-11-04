@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [ :index ]
+  before_action :authenticate_user!, except: [ :index, :autocomplete ]
   before_action :set_post, only: [ :show, :edit, :update, :destroy ]
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
@@ -67,6 +67,79 @@ class PostsController < ApplicationController
     redirect_to posts_path, notice: t("posts.destroyed")
   rescue => e
     redirect_to posts_path, alert: t("posts.destroy_failed", error: e.message)
+  end
+
+  def autocomplete
+    query = "%#{params[:q]}%"
+    results = []
+
+    # 店名検索結果（店名のみ）
+    Shop.joins(:posts)
+      .where("shops.name LIKE ?", query)
+      .select("DISTINCT shops.id, shops.name")
+      .order("shops.name ASC")
+      .limit(10)
+      .each do |shop|
+        results << { type: "shop", name: shop.name, value: shop.name }
+      end
+
+    # 酒名検索結果（店名 + 住所）
+    Sake.where("sakes.name LIKE ?", query)
+      .includes(shops: [:shop_places, :posts])
+      .order("sakes.name ASC")
+      .limit(10)
+      .each do |sake|
+        sake.shops.each do |shop|
+          next unless shop.posts.any?
+          shop.shop_places.each do |place|
+            results << {
+              type: "sake",
+              name: shop.name,
+              address: place.address,
+              value: sake.name,
+              sake_name: sake.name
+            }
+          end
+        end
+      end
+
+    # 食品名検索結果（店名 + 住所）
+    Food.where("foods.name LIKE ?", query)
+      .includes(shops: [:shop_places, :posts])
+      .order("foods.name ASC")
+      .limit(10)
+      .each do |food|
+        food.shops.each do |shop|
+          next unless shop.posts.any?
+          shop.shop_places.each do |place|
+            results << {
+              type: "food",
+              name: shop.name,
+              address: place.address,
+              value: food.name,
+              food_name: food.name
+            }
+          end
+        end
+      end
+
+    # 住所検索結果（店名 + 住所）
+    ShopPlace.joins(shop: :posts)
+      .where("shop_places.address LIKE ?", query)
+      .includes(:shop)
+      .select("DISTINCT shop_places.id, shop_places.address, shop_places.shop_id")
+      .order("shop_places.address ASC")
+      .limit(10)
+      .each do |place|
+        results << { type: "address", name: place.shop.name, address: place.address, value: place.address }
+      end
+
+    # 重複を削除して順序を安定化
+    @results = results.uniq { |r| [r[:type], r[:name], r[:address]] }.first(10)
+
+    respond_to do |format|
+      format.html { render partial: "posts/autocomplete_results", locals: { results: @results } }
+    end
   end
 
   private

@@ -1,0 +1,5 @@
+<% @posts.each do |post| %>
+  <li class="flex w-full items-center text-sm py-2 px-3 hover:bg-amber-100" role="option" data-autocomplete-value="<post.shop.name>">
+    <%= post.shop.name %>
+  </li>
+<% end %>

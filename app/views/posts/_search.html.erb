@@ -1,6 +1,6 @@
 <div class="w-full max-w-4xl mx-auto mb-8 px-2">
   <%= search_form_for @q, url: posts_path, method: :get, class: "relative" do |f| %>
-    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow">
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
       <!-- 検索フィールドとボタン -->
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 p-3 sm:p-4">
         <div class="flex items-center gap-2 sm:gap-3 flex-1">
@@ -12,9 +12,14 @@
           </div>
 
           <!-- 検索フィールド -->
-          <%= f.search_field :shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont,
-              placeholder: t('posts.search_placeholder'),
-              class: "flex-1 text-gray-700 placeholder-gray-400 focus:outline-none text-base sm:text-lg min-w-0" %>
+          <div class="flex-1 relative" data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_posts_path %>" role="combobox">
+            <%= f.search_field :shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont,
+                placeholder: t('posts.search_placeholder'),
+                class: "w-full text-gray-700 placeholder-gray-400 focus:outline-none text-base sm:text-lg",
+                autocomplete: "off",
+                data: { autocomplete_target: 'input' } %>
+            <ul class="autocomplete-results-list absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto" data-autocomplete-target="results"></ul>
+          </div>
         </div>
 
         <!-- 検索ボタン -->
