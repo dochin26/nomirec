@@ -1,0 +1,16 @@
+<% results.each_with_index do |result, index| %>
+  <li class="autocomplete-result-item" role="option" data-autocomplete-value="<%= result[:name] %>" data-index="<%= index %>">
+    <% if result[:type] == "shop" %>
+      <span class="font-medium"><%= result[:name] %></span>
+    <% elsif result[:type] == "sake" %>
+      <span class="font-medium"><%= result[:name] %></span>
+      <span class="text-gray-500 text-sm ml-2"><%= result[:address] %></span>
+    <% elsif result[:type] == "food" %>
+      <span class="font-medium"><%= result[:name] %></span>
+      <span class="text-gray-500 text-sm ml-2"><%= result[:address] %></span>
+    <% elsif result[:type] == "address" %>
+      <span class="font-medium"><%= result[:name] %></span>
+      <span class="text-gray-500 text-sm ml-2"><%= result[:address] %></span>
+    <% end %>
+  </li>
+<% end %>

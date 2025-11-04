@@ -6,7 +6,11 @@ Rails.application.routes.draw do
   }
   root "static_pages#index"
   get "mypage", to: "my_pages#show"
-  resources :posts, only: %i[index new show edit create update destroy]
+  resources :posts, only: %i[index new show edit create update destroy] do
+    collection do
+      get "autocomplete"
+    end
+  end
   resources :shops, only: %i[index show edit create update destroy] do
     resources :likes, only: %i[create destroy]
   end

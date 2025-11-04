@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [ :index ]
+  before_action :authenticate_user!, except: [ :index, :autocomplete ]
   before_action :set_post, only: [ :show, :edit, :update, :destroy ]
   before_action :check_owner, only: [ :edit, :update, :destroy ]
 
@@ -69,6 +69,22 @@ class PostsController < ApplicationController
     redirect_to posts_path, alert: t("posts.destroy_failed", error: e.message)
   end
 
+  def autocomplete
+    query = "%#{params[:q]}%"
+    results = [
+      search_shops(query),
+      search_sakes(query),
+      search_foods(query),
+      search_addresses(query)
+    ].flatten
+
+    @results = results.uniq { |r| [ r[:type], r[:name], r[:address] ] }.first(10)
+
+    respond_to do |format|
+      format.html { render partial: "posts/autocomplete_results", locals: { results: @results } }
+    end
+  end
+
   private
 
   def set_post
@@ -107,5 +123,57 @@ class PostsController < ApplicationController
         shop_places_attributes: [ :id, :address, :_destroy ]
       ]
     )
+  end
+
+  # オートコンプリート検索メソッド
+  def search_shops(query)
+    Shop.joins(:posts)
+      .where("shops.name LIKE ?", query)
+      .select("DISTINCT shops.id, shops.name")
+      .order("shops.name ASC")
+      .limit(10)
+      .map { |shop| { type: "shop", name: shop.name, value: shop.name } }
+  end
+
+  def search_sakes(query)
+    Sake.where("sakes.name LIKE ?", query)
+      .includes(shops: [ :shop_places, :posts ])
+      .order("sakes.name ASC")
+      .limit(10)
+      .flat_map { |sake| build_item_results(sake, "sake") }
+  end
+
+  def search_foods(query)
+    Food.where("foods.name LIKE ?", query)
+      .includes(shops: [ :shop_places, :posts ])
+      .order("foods.name ASC")
+      .limit(10)
+      .flat_map { |food| build_item_results(food, "food") }
+  end
+
+  def search_addresses(query)
+    ShopPlace.joins(shop: :posts)
+      .where("shop_places.address LIKE ?", query)
+      .includes(:shop)
+      .select("DISTINCT shop_places.id, shop_places.address, shop_places.shop_id")
+      .order("shop_places.address ASC")
+      .limit(10)
+      .map { |place| { type: "address", name: place.shop.name, address: place.address, value: place.address } }
+  end
+
+  def build_item_results(item, type)
+    item.shops.flat_map do |shop|
+      next [] unless shop.posts.any?
+
+      shop.shop_places.map do |place|
+        {
+          type: type,
+          name: shop.name,
+          address: place.address,
+          value: item.name,
+          "#{type}_name".to_sym => item.name
+        }
+      end
+    end.compact
   end
 end

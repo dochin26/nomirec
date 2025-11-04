@@ -1,24 +1,28 @@
-<div class="w-full max-w-4xl mx-auto mb-8 px-2">
-  <%= search_form_for @q, url: posts_path, method: :get, class: "relative" do |f| %>
-    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow">
-      <!-- 検索フィールドとボタン -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 p-3 sm:p-4">
-        <div class="flex items-center gap-2 sm:gap-3 flex-1">
-          <!-- 検索アイコン -->
-          <div class="flex-shrink-0 text-orange-500">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          <!-- 検索フィールド -->
-          <%= f.search_field :shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont,
-              placeholder: t('posts.search_placeholder'),
-              class: "flex-1 text-gray-700 placeholder-gray-400 focus:outline-none text-base sm:text-lg min-w-0" %>
+<div class="w-full max-w-4xl mx-auto mb-8 px-2" data-controller="search" data-search-url-value="<%= posts_path %>">
+  <%= search_form_for @q, url: posts_path, method: :get, class: "relative", data: { search_target: 'form' } do |f| %>
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+      <!-- 検索フィールド -->
+      <div class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4">
+        <!-- 検索アイコン -->
+        <div class="flex-shrink-0 text-orange-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
         </div>
 
-        <!-- 検索ボタン -->
-        <%= f.submit t('common.search'), class: "w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-sm sm:text-base" %>
+        <!-- 検索フィールド -->
+        <div class="flex-1 relative" data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_posts_path %>" data-action="autocomplete.change->search#submitForm" role="combobox">
+          <%= f.search_field :shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont,
+              placeholder: t('posts.search_placeholder'),
+              class: "w-full text-gray-700 placeholder-gray-400 focus:outline-none text-base sm:text-lg",
+              autocomplete: "off",
+              data: {
+                autocomplete_target: 'input',
+                search_target: 'input',
+                action: 'keydown->search#handleKeydown'
+              } %>
+          <ul class="autocomplete-results-list absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto" data-autocomplete-target="results"></ul>
+        </div>
       </div>
 
       <!-- 検索のヒント -->

@@ -21,9 +21,8 @@ RSpec.describe "Posts", type: :system do
 
     create_post_with_relations(user: user)
 
-    visit posts_path
-    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont", with: "ラーメン二郎"
-    click_button "検索"
+    # 検索パラメータを含むURLに直接アクセス
+    visit posts_path(q: { shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont: "ラーメン二郎" })
 
     expect(page).to have_content("市川海老蔵似のイケメン店主。豚ポタスープが特徴。")
   end
@@ -33,9 +32,8 @@ RSpec.describe "Posts", type: :system do
 
     create_post_with_relations(user: user)
 
-    visit posts_path
-    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont", with: "キリンビール"
-    click_button "検索"
+    # 検索パラメータを含むURLに直接アクセス
+    visit posts_path(q: { shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont: "キリンビール" })
 
     expect(page).to have_content("ラーメン二郎ひばりヶ丘店")
   end
@@ -45,9 +43,8 @@ RSpec.describe "Posts", type: :system do
 
     create_post_with_relations(user: user)
 
-    visit posts_path
-    fill_in "q_shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont", with: "ラーメン"
-    click_button "検索"
+    # 検索パラメータを含むURLに直接アクセス
+    visit posts_path(q: { shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont: "ラーメン" })
 
     expect(page).to have_content("キリンビール")
   end
