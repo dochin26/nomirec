@@ -2,7 +2,7 @@
   <%= render 'search', q: @q, url: posts_path %>
 
   <!-- 掲示板一覧 -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4" style="margin-bottom: 4rem;">
+  <div id="posts_list" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4" style="margin-bottom: 4rem;">
     <% if @posts.present? %>
       <%= render partial: 'post', collection: @posts %>
     <% else %>
@@ -15,3 +15,30 @@
     <%= paginate @posts %>
   </div>
 </div>
+
+<!-- モーダル用のTurbo Frame -->
+<turbo-frame id="post_modal">
+</turbo-frame>
+
+<% if params[:open_modal] == 'new' %>
+  <script>
+    // DOMContentLoadedとturbo:loadの両方に対応
+    function openModalFrame() {
+      const frame = document.getElementById('post_modal');
+      if (frame) {
+        frame.src = '<%= new_post_path %>';
+      }
+    }
+
+    // ページが既に読み込まれている場合（Turbo遷移）
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', openModalFrame);
+    } else {
+      // すでにDOMが読み込まれている場合
+      openModalFrame();
+    }
+
+    // Turbo遷移時にも対応
+    document.addEventListener('turbo:load', openModalFrame, { once: true });
+  </script>
+<% end %>
