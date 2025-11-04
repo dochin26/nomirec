@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import Autocomplete from "stimulus-autocomplete"
 application.register("autocomplete", Autocomplete)
+
+import SearchController from "./search_controller"
+application.register("search", SearchController)

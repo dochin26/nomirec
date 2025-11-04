@@ -71,71 +71,14 @@ class PostsController < ApplicationController
 
   def autocomplete
     query = "%#{params[:q]}%"
-    results = []
+    results = [
+      search_shops(query),
+      search_sakes(query),
+      search_foods(query),
+      search_addresses(query)
+    ].flatten
 
-    # 店名検索結果（店名のみ）
-    Shop.joins(:posts)
-      .where("shops.name LIKE ?", query)
-      .select("DISTINCT shops.id, shops.name")
-      .order("shops.name ASC")
-      .limit(10)
-      .each do |shop|
-        results << { type: "shop", name: shop.name, value: shop.name }
-      end
-
-    # 酒名検索結果（店名 + 住所）
-    Sake.where("sakes.name LIKE ?", query)
-      .includes(shops: [:shop_places, :posts])
-      .order("sakes.name ASC")
-      .limit(10)
-      .each do |sake|
-        sake.shops.each do |shop|
-          next unless shop.posts.any?
-          shop.shop_places.each do |place|
-            results << {
-              type: "sake",
-              name: shop.name,
-              address: place.address,
-              value: sake.name,
-              sake_name: sake.name
-            }
-          end
-        end
-      end
-
-    # 食品名検索結果（店名 + 住所）
-    Food.where("foods.name LIKE ?", query)
-      .includes(shops: [:shop_places, :posts])
-      .order("foods.name ASC")
-      .limit(10)
-      .each do |food|
-        food.shops.each do |shop|
-          next unless shop.posts.any?
-          shop.shop_places.each do |place|
-            results << {
-              type: "food",
-              name: shop.name,
-              address: place.address,
-              value: food.name,
-              food_name: food.name
-            }
-          end
-        end
-      end
-
-    # 住所検索結果（店名 + 住所）
-    ShopPlace.joins(shop: :posts)
-      .where("shop_places.address LIKE ?", query)
-      .includes(:shop)
-      .select("DISTINCT shop_places.id, shop_places.address, shop_places.shop_id")
-      .order("shop_places.address ASC")
-      .limit(10)
-      .each do |place|
-        results << { type: "address", name: place.shop.name, address: place.address, value: place.address }
-      end
-
-    # 重複を削除して順序を安定化
-    @results = results.uniq { |r| [r[:type], r[:name], r[:address]] }.first(10)
+    @results = results.uniq { |r| [ r[:type], r[:name], r[:address] ] }.first(10)
 
     respond_to do |format|
       format.html { render partial: "posts/autocomplete_results", locals: { results: @results } }
@@ -180,5 +123,57 @@ class PostsController < ApplicationController
         shop_places_attributes: [ :id, :address, :_destroy ]
       ]
     )
+  end
+
+  # オートコンプリート検索メソッド
+  def search_shops(query)
+    Shop.joins(:posts)
+      .where("shops.name LIKE ?", query)
+      .select("DISTINCT shops.id, shops.name")
+      .order("shops.name ASC")
+      .limit(10)
+      .map { |shop| { type: "shop", name: shop.name, value: shop.name } }
+  end
+
+  def search_sakes(query)
+    Sake.where("sakes.name LIKE ?", query)
+      .includes(shops: [ :shop_places, :posts ])
+      .order("sakes.name ASC")
+      .limit(10)
+      .flat_map { |sake| build_item_results(sake, "sake") }
+  end
+
+  def search_foods(query)
+    Food.where("foods.name LIKE ?", query)
+      .includes(shops: [ :shop_places, :posts ])
+      .order("foods.name ASC")
+      .limit(10)
+      .flat_map { |food| build_item_results(food, "food") }
+  end
+
+  def search_addresses(query)
+    ShopPlace.joins(shop: :posts)
+      .where("shop_places.address LIKE ?", query)
+      .includes(:shop)
+      .select("DISTINCT shop_places.id, shop_places.address, shop_places.shop_id")
+      .order("shop_places.address ASC")
+      .limit(10)
+      .map { |place| { type: "address", name: place.shop.name, address: place.address, value: place.address } }
+  end
+
+  def build_item_results(item, type)
+    item.shops.flat_map do |shop|
+      next [] unless shop.posts.any?
+
+      shop.shop_places.map do |place|
+        {
+          type: type,
+          name: shop.name,
+          address: place.address,
+          value: item.name,
+          "#{type}_name".to_sym => item.name
+        }
+      end
+    end.compact
   end
 end
