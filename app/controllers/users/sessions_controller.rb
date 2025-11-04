@@ -4,7 +4,13 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def create
-    super
+    super do |resource|
+      # 登録ボタンから来た場合は、stored_locationをpostsページで上書き
+      if session[:redirect_to_posts_after_sign_in]
+        session.delete(:redirect_to_posts_after_sign_in)
+        store_location_for(resource, posts_path)
+      end
+    end
   end
 
   def destroy

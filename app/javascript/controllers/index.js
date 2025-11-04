@@ -12,3 +12,21 @@ application.register("autocomplete", Autocomplete)
 
 import SearchController from "./search_controller"
 application.register("search", SearchController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
+import ImagePreviewController from "./image_preview_controller"
+application.register("image-preview", ImagePreviewController)
+
+import LoadingController from "./loading_controller"
+application.register("loading", LoadingController)
+
+import FormValidationController from "./form_validation_controller"
+application.register("form-validation", FormValidationController)
+
+import ToastController from "./toast_controller"
+application.register("toast", ToastController)
+
+import NewPostController from "./new_post_controller"
+application.register("new-post", NewPostController)

@@ -39,14 +39,32 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    if @post.save
-      # タグの更新
-      update_shop_tags(@post.shop, params[:post][:shop_attributes])
-      flash[:success] = t("posts.created")
-      redirect_to posts_path
-    else
-      flash.now[:danger] = t("posts.create_failed")
-      render :new, status: :unprocessable_entity
+
+    respond_to do |format|
+      if @post.save
+        # タグの更新
+        update_shop_tags(@post.shop, params[:post][:shop_attributes])
+
+        format.turbo_stream {
+          render turbo_stream: [
+            turbo_stream.prepend("posts_list", partial: "posts/post", locals: { post: @post }),
+            turbo_stream.update("post_modal", ""),
+            turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: t("posts.created"), type: "success" })
+          ]
+        }
+        format.html {
+          flash[:success] = t("posts.created")
+          redirect_to posts_path
+        }
+      else
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace("post_modal", partial: "posts/modal_form", locals: { post: @post })
+        }
+        format.html {
+          flash.now[:danger] = t("posts.create_failed")
+          render :new, status: :unprocessable_entity
+        }
+      end
     end
   end
 
