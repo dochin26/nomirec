@@ -12,7 +12,7 @@ module PostsHelper
     processed_image = apply_size_variant(image, options[:size])
 
     if Rails.env.production? && Rails.application.credentials.r2[:public_url].present?
-      "#{Rails.application.credentials.r2[:public_url]}/#{processed_image.key}"
+      "#{Rails.application.credentials.r2[:public_url]}/#{image.key}"
     else
       url_for(processed_image)
     end
