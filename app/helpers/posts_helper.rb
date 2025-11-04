@@ -1,14 +1,29 @@
 module PostsHelper
-  # post.body_image の URL を環境に応じて返す
-  def image_url_for(image)
+  IMAGE_SIZES = {
+    thumbnail: [ 150, 150 ],
+    small: [ 300, 200 ],
+    medium: [ 600, 400 ],
+    large: [ 1200, 800 ]
+  }.freeze
+
+  def image_url_for(image, options = {})
     return unless image.attached?
 
+    processed_image = apply_size_variant(image, options[:size])
+
     if Rails.env.production? && Rails.application.credentials.r2[:public_url].present?
-      # 本番環境では R2 の URL を返す
-      "#{Rails.application.credentials.r2[:public_url]}/#{image.key}"
+      "#{Rails.application.credentials.r2[:public_url]}/#{processed_image.key}"
     else
-      # 開発環境や R2 URL がない場合は ActiveStorage の url_for を使用
-      url_for(image)
+      url_for(processed_image)
     end
+  end
+
+  private
+
+  def apply_size_variant(image, size)
+    return image unless size && IMAGE_SIZES[size]
+
+    dimensions = IMAGE_SIZES[size]
+    image.variant(resize_to_limit: dimensions)
   end
 end
