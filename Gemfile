@@ -101,3 +101,6 @@ gem "omniauth-rails_csrf_protection"
 
 # ページネーション
 gem "kaminari"
+
+# OGP対応
+gem "meta-tags"
