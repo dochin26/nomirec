@@ -24,6 +24,7 @@ class PostsController < ApplicationController
   def show
     @address = @post.shop.shop_places.pluck(:address).to_s
     gon.addresses = @address
+    set_post_meta_tags
   end
 
   def edit
@@ -104,6 +105,42 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def set_post_meta_tags
+    image_url = ogp_image_url(@post)
+
+    set_meta_tags(
+      title: "#{@post.shop.name} - NomireQ",
+      description: "特徴的なお酒や料理を共有しよう！ NomireQ",
+      og: {
+        title: @post.shop.name,
+        description: "特徴的なお酒や料理を共有しよう！ NomireQ",
+        type: "article",
+        url: post_url(@post),
+        image: image_url
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: @post.shop.name,
+        description: "特徴的なお酒や料理を共有しよう！ NomireQ",
+        image: image_url
+      }
+    )
+  end
+
+  def ogp_image_url(post)
+    if post.body_image.attached?
+      if Rails.env.production? && Rails.application.credentials.r2[:public_url].present?
+        "#{Rails.application.credentials.r2[:public_url]}/#{post.body_image.key}"
+      else
+        url_for(post.body_image.variant(resize_to_limit: [ 1200, 630 ]))
+      end
+    else
+      # デフォルト画像のURL（後で設定）
+      # "#{request.base_url}/default_ogp.png"
+      image_tag("nomireq.jpg", alt: "NomireQ")
+    end
+  end
 
   def set_post
     @post = Post.find(params[:id])

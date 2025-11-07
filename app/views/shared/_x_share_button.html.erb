@@ -1,0 +1,19 @@
+<% size ||= 'md' %>
+<% button_classes = if size == 'sm'
+  "group inline-flex items-center gap-2 px-3 py-2 bg-black hover:bg-gray-800 text-white rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 text-sm"
+else
+  "group inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+end %>
+<% icon_classes = size == 'sm' ? 'h-4 w-4' : 'h-5 w-5' %>
+<% text_classes = size == 'sm' ? 'font-bold' : 'text-sm font-bold' %>
+
+<% share_text = "#{shop_name} " %>
+<%= link_to "https://x.com/intent/tweet?text=レア度の高いお店を共有します%0A#{ERB::Util.url_encode(share_text)}%0A%23NomireQ",
+            target: "_blank",
+            rel: "noopener noreferrer",
+            class: button_classes do %>
+  <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_classes %>" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+  <span class="<%= text_classes %>">シェア</span>
+<% end %>
