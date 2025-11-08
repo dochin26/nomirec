@@ -100,7 +100,11 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  config.action_mailer.default_url_options = { host: "https://nomilog.fly.dev/" }
+  config.action_mailer.default_url_options = { host: "nomilog.fly.dev", protocol: "https" }
+
+  # Routes用のデフォルトURLオプション（OGP画像URL生成に必要）
+  Rails.application.routes.default_url_options = { host: "nomilog.fly.dev", protocol: "https" }
+
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
