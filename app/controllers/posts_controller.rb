@@ -158,7 +158,7 @@ class PostsController < ApplicationController
       end
     else
       # デフォルト画像のURL
-      ActionController::Base.helpers.asset_url('nomireq.jpg')
+      ActionController::Base.helpers.asset_url("nomireq.jpg")
     end
   end
 
