@@ -133,12 +133,15 @@ class PostsController < ApplicationController
       if Rails.env.production? && Rails.application.credentials.r2[:public_url].present?
         "#{Rails.application.credentials.r2[:public_url]}/#{post.body_image.key}"
       else
-        url_for(post.body_image.variant(resize_to_limit: [ 1200, 630 ]))
+        # 開発環境では完全なURLを生成
+        Rails.application.routes.url_helpers.url_for(
+          post.body_image.variant(resize_to_limit: [ 1200, 630 ]),
+          host: request.base_url
+        )
       end
     else
-      # デフォルト画像のURL（後で設定）
-      # "#{request.base_url}/default_ogp.png"
-      image_tag("nomireq.jpg", alt: "NomireQ")
+      # デフォルト画像のURL
+      "#{request.base_url}/assets/nomireq.jpg"
     end
   end
 
