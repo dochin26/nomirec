@@ -5,7 +5,7 @@ RSpec.describe "Posts", type: :system do
 
   it "掲示板の作成ができる" do
     sign_in user
-    visit new_post_path
+    visit new_post_edit_path
     fill_in "店名", with: "ラーメン二郎亀戸店"
     fill_in "説明", with: "ちいかわ公認の二郎で、女性助手がいます。豚も大ぶりで1枚100円で追加可能。"
     fill_in "酒名", with: "アサヒビール"

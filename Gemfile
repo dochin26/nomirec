@@ -62,6 +62,13 @@ group :development, :test do
 
   gem "capybara"
   gem "selenium-webdriver"  # ブラウザテスト用（必要に応じて）
+
+  # 検証ツール
+  gem "pry-rails"
+
+  # エラー時の変数表示
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 # Tailwind CSSをRailsで使うため

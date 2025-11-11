@@ -163,7 +163,7 @@ class PostsController < ApplicationController
   end
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.includes(comments: :user, user: {}).find(params[:id])
   end
 
   def check_owner
@@ -186,7 +186,6 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(
-      :comment,
       :shop_id,
       :body_image,
       shop_attributes: [

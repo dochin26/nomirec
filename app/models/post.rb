@@ -1,8 +1,7 @@
 class Post < ApplicationRecord
-    validates :comment, presence: true
-
-    belongs_to :shop
-    belongs_to :user
+    belongs_to  :shop
+    belongs_to  :user
+    has_many    :comments, dependent: :destroy
 
     accepts_nested_attributes_for :shop
 

@@ -94,4 +94,6 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   config.action_mailer.delivery_method = :letter_opener_web
+
+  BetterErrors::Middleware.allow_ip! "0.0.0.0/0"
 end
