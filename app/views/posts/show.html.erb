@@ -60,11 +60,11 @@
       </div>
     </div>
 
-    <!-- Comment -->
+    <!-- Original Post Description -->
     <div class="mb-6">
-      <label class="block text-sm font-medium text-gray-700">Comment</label>
-      <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full min-h-[100px]">
-        <%= @post.comment %>
+      <label class="block text-sm font-medium text-gray-700">投稿者のコメント</label>
+      <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+        <%= @post.user.name || @post.user.email %>さんの投稿
       </div>
     </div>
 
@@ -78,10 +78,46 @@
       <%= render 'shared/x_share_button', shop_name: @post.shop.name, share_url: post_url(@post) %>
     </div>
 
+    <!-- Comments Section -->
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        コメント (<%= @post.comments.count %>)
+      </h3>
+
+      <!-- Comments List -->
+      <div id="comments_list" class="mb-6">
+        <% if @post.comments.any? %>
+          <%= render @post.comments %>
+        <% else %>
+          <p class="text-gray-500 text-sm text-center py-8">まだコメントがありません</p>
+        <% end %>
+      </div>
+
+      <!-- Comment Form -->
+      <% if user_signed_in? %>
+        <%= render 'comments/form', post: @post, comment: Comment.new %>
+      <% else %>
+        <div class="text-center py-4 bg-gray-50 rounded-lg">
+          <p class="text-gray-600 mb-2">コメントするにはログインが必要です</p>
+          <%= link_to "ログイン", new_user_session_path, class: "text-blue-600 hover:text-blue-800 font-medium" %>
+        </div>
+      <% end %>
+    </div>
+
     <!-- Buttons -->
-    <div class="flex justify-between pt-4 border-t">
+    <div class="flex justify-between pt-4 mt-6">
+    <% if current_user && current_user == @post.user %>
+    <div>
       <%= link_to "戻る", posts_path,
         class: "px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg shadow-sm transition" %>
+    </div>
+    <% end %>
+    <% if current_user && current_user == @post.user %>
+    <div>
+      <%= link_to "削除", post_path(@post), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "btn px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm transition border-0"  %>
+      <%= link_to "編集する", edit_post_path(@post), class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition cursor-pointer" %>
+    </div>
+    <% end %>
     </div>
   </div>
 </div>

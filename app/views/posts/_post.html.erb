@@ -13,11 +13,7 @@
       <!-- ヘッダー: タイトルとアクションボタン -->
       <div class="flex justify-between items-start gap-3">
         <h3 class="text-xl font-bold text-gray-800 flex-1 group-hover:text-orange-600 transition-colors">
-          <% if current_user && current_user == post.user %>
-            <%= link_to post.shop.name, edit_post_path(post), class: "hover:underline" %>
-          <% else %>
             <%= link_to post.shop.name, post_path(post), class: "hover:underline" %>
-          <% end %>
         </h3>
 
         <% if current_user && current_user == post.user %>
@@ -94,7 +90,7 @@
       <% end %>
 
       <!-- コメント -->
-      <% if post.comment.present? %>
+      <%# if post.comment.present? %><!--
         <div class="space-y-2">
           <div class="flex items-center gap-2 text-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,9 +98,9 @@
             </svg>
             <span class="text-xs font-semibold">コメント</span>
           </div>
-          <p class="text-sm text-gray-700 bg-gray-50 rounded-lg p-3"><%= post.comment %></p>
+          <p class="text-sm text-gray-700 bg-gray-50 rounded-lg p-3"><%#= post.comment %></p>
         </div>
-      <% end %>
+      --><%# end %>
 
       <!-- フッター: ユーザーと日付 -->
       <div class="pt-4 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">

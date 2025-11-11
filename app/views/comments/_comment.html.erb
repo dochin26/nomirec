@@ -1,0 +1,32 @@
+<div id="comment_<%= comment.id %>" class="border-b border-gray-200 py-4 last:border-b-0">
+  <div class="flex items-start gap-3">
+    <div class="flex-shrink-0">
+      <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+        <span class="text-gray-600 font-medium text-sm">
+          <%= comment.user.name&.first || comment.user.email&.first&.upcase || "?" %>
+        </span>
+      </div>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="font-medium text-gray-900 text-sm"><%= comment.user.name || comment.user.email %></span>
+        <span class="text-gray-500 text-xs"><%= time_ago_in_words(comment.created_at) %>前</span>
+      </div>
+
+      <p class="text-gray-700 text-sm whitespace-pre-wrap break-words"><%= comment.body %></p>
+
+      <%# binding.pry %>
+      <% if user_signed_in? && comment.user == current_user %>
+        <div class="mt-2">
+          <%= button_to post_comment_path(comment.post, comment),
+              method: :delete,
+              data: { turbo_stream: true },
+              class: "text-red-600 hover:text-red-800 text-xs font-medium transition" do %>
+            削除
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

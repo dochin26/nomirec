@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|

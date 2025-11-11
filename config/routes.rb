@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     collection do
       get "autocomplete"
     end
+    resources :comments, only: %i[create destroy]
   end
   resources :shops, only: %i[index show edit create update destroy] do
     resources :likes, only: %i[create destroy]
