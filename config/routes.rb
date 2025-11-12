@@ -6,9 +6,7 @@ Rails.application.routes.draw do
   }
   root "static_pages#index"
   get "mypage", to: "my_pages#show"
-  namespace :account do
-    resource :account, only: %i[edit update]
-  end
+  resource :account, only: %i[edit update]
   resources :posts, only: %i[index new show edit create update destroy] do
     collection do
       get "autocomplete"

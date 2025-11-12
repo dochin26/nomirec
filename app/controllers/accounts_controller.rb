@@ -1,4 +1,4 @@
-class Account::AccountsController < ApplicationController
+class AccountsController < ApplicationController
   before_action :authenticate_user!
 
   def edit
