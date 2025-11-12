@@ -9,13 +9,13 @@ module ApplicationHelper
   def image_url_for(image, options = {})
     return unless image.attached?
 
-    processed_image = apply_size_variant(image, options[:size])
-
     if Rails.env.production? && Rails.application.credentials.dig(:r2, :public_url).present?
-      # 本番環境でR2のパブリックURLを使用
-      key = processed_image.respond_to?(:key) ? processed_image.key : image.key
-      "#{Rails.application.credentials.r2[:public_url]}/#{key}"
+      # 本番環境ではvariantを使わずオリジナル画像のURLを返す
+      # R2のパブリックURLを使用
+      "#{Rails.application.credentials.r2[:public_url]}/#{image.key}"
     else
+      # 開発環境ではvariantを適用
+      processed_image = apply_size_variant(image, options[:size])
       url_for(processed_image)
     end
   end
