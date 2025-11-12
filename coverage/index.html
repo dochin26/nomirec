@@ -13,7 +13,7 @@
       <img src="./assets/0.13.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2025-11-12T23:02:03+09:00">2025-11-12T23:02:03+09:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2025-11-13T03:28:35+09:00">2025-11-13T03:28:35+09:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -22,14 +22,14 @@
     <span class="group_name">All Files</span>
     (<span class="covered_percent">
       <span class="red">
-  67.03%
+  67.28%
 </span>
 
      </span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         6.41
+         6.43
        </span>
     </span> hits/line
     )
@@ -42,11 +42,11 @@
   </div>
 
   <div class="t-line-summary">
-    <b>273</b> relevant lines,
+    <b>272</b> relevant lines,
     <span class="green"><b>183</b> lines covered</span> and
-    <span class="red"><b>90</b> lines missed. </span>
+    <span class="red"><b>89</b> lines missed. </span>
     (<span class="red">
-  67.03%
+  67.28%
 </span>
 )
   </div>
@@ -115,12 +115,12 @@
         
           <tr class="t-file">
             <td class="strong t-file__name"><a href="#11cb54ce5f683945ba6ef8d0bfcce6687cc55dd0" class="src_link" title="app/helpers/application_helper.rb">app/helpers/application_helper.rb</a></td>
-            <td class="red strong cell--number t-file__coverage">35.71 %</td>
+            <td class="red strong cell--number t-file__coverage">38.46 %</td>
             <td class="cell--number">31</td>
-            <td class="cell--number">14</td>
+            <td class="cell--number">13</td>
             <td class="cell--number">5</td>
-            <td class="cell--number">9</td>
-            <td class="cell--number">0.36</td>
+            <td class="cell--number">8</td>
+            <td class="cell--number">0.38</td>
             
           </tr>
         
@@ -4003,7 +4003,7 @@
     <h3>app/helpers/application_helper.rb</h3>
     <h4>
       <span class="red">
-  35.71%
+  38.46%
 </span>
 
       lines covered
@@ -4012,9 +4012,9 @@
     
 
     <div class="t-line-summary">
-      <b>14</b> relevant lines.
+      <b>13</b> relevant lines.
       <span class="green"><b>5</b> lines covered</span> and
-      <span class="red"><b>9</b> lines missed.</span>
+      <span class="red"><b>8</b> lines missed.</span>
     </div>
 
     
@@ -4146,7 +4146,7 @@
 
             
 
-            <code class="ruby">    processed_image = apply_size_variant(image, options[:size])</code>
+            <code class="ruby">    if Rails.env.production? &amp;&amp; Rails.application.credentials.dig(:r2, :public_url).present?</code>
           </li>
         </div>
       
@@ -4156,57 +4156,57 @@
 
             
 
-            <code class="ruby"></code>
+            <code class="ruby">      # 本番環境ではvariantを使わずオリジナル画像のURLを返す</code>
           </li>
         </div>
       
         <div>
-          <li class="missed" data-hits="0" data-linenumber="14">
+          <li class="never" data-hits="" data-linenumber="14">
             
 
             
 
-            <code class="ruby">    if Rails.env.production? &amp;&amp; Rails.application.credentials.dig(:r2, :public_url).present?</code>
+            <code class="ruby">      # R2のパブリックURLを使用</code>
           </li>
         </div>
       
         <div>
-          <li class="never" data-hits="" data-linenumber="15">
+          <li class="missed" data-hits="0" data-linenumber="15">
             
 
             
 
-            <code class="ruby">      # 本番環境でR2のパブリックURLを使用</code>
+            <code class="ruby">      &quot;#{Rails.application.credentials.r2[:public_url]}/#{image.key}&quot;</code>
           </li>
         </div>
       
         <div>
-          <li class="missed" data-hits="0" data-linenumber="16">
-            
-
-            
-
-            <code class="ruby">      key = processed_image.respond_to?(:key) ? processed_image.key : image.key</code>
-          </li>
-        </div>
-      
-        <div>
-          <li class="missed" data-hits="0" data-linenumber="17">
-            
-
-            
-
-            <code class="ruby">      &quot;#{Rails.application.credentials.r2[:public_url]}/#{key}&quot;</code>
-          </li>
-        </div>
-      
-        <div>
-          <li class="never" data-hits="" data-linenumber="18">
+          <li class="never" data-hits="" data-linenumber="16">
             
 
             
 
             <code class="ruby">    else</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="17">
+            
+
+            
+
+            <code class="ruby">      # 開発環境ではvariantを適用</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="18">
+            
+
+            
+
+            <code class="ruby">      processed_image = apply_size_variant(image, options[:size])</code>
           </li>
         </div>
       

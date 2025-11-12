@@ -4,7 +4,9 @@
     <div class="flex justify-between h-16 items-center">
       <!-- ロゴ -->
       <div class="flex-shrink-0">
-        <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-pink-600" %>
+        <%= link_to root_path, class: "flex items-center" do %>
+          <%= image_tag 'nomireq.png', alt: t('app_name'), class: "h-10 w-auto" %>
+        <% end %>
       </div>
 
       <!-- ログイン・ログアウト -->
