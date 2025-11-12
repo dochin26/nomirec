@@ -21,7 +21,7 @@
           <div class="flex items-center gap-6 mb-4">
             <div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white text-3xl font-bold">
               <% if @user.avatar.attached? %>
-                <%= image_tag @user.avatar.variant(:thumb), class: "w-full h-full object-cover" %>
+                <%= image_tag @user.avatar.variant(resize_to_limit: [150, 150]), class: "w-full h-full object-cover" %>
               <% else %>
                 <%= @user.name.first %>
               <% end %>

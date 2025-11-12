@@ -3,7 +3,7 @@
     <div class="flex-shrink-0">
       <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center overflow-hidden">
         <% if comment.user.avatar.attached? %>
-          <%= image_tag comment.user.avatar.variant(:thumb), class: "w-full h-full object-cover", alt: comment.user.name %>
+          <%= image_tag comment.user.avatar.variant(resize_to_limit: [150, 150]), class: "w-full h-full object-cover", alt: comment.user.name %>
         <% else %>
           <span class="text-white font-medium text-sm">
             <%= comment.user.name&.first || comment.user.email&.first&.upcase || "?" %>

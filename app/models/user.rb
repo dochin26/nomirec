@@ -9,10 +9,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  has_one_attached :avatar do |attachable|
-    attachable.variant :thumb, name: :thumb, resize_to_limit: [ 150, 150 ], preprocessed: true
-    attachable.variant :medium, name: :medium, resize_to_limit: [ 400, 400 ], preprocessed: true
-  end
+  has_one_attached :avatar
 
   validate :acceptable_avatar
 
