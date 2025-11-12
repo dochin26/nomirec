@@ -1,2 +1,31 @@
 module ApplicationHelper
+  IMAGE_SIZES = {
+    thumbnail: [ 150, 150 ],
+    small: [ 300, 200 ],
+    medium: [ 600, 400 ],
+    large: [ 1200, 800 ]
+  }.freeze
+
+  def image_url_for(image, options = {})
+    return unless image.attached?
+
+    processed_image = apply_size_variant(image, options[:size])
+
+    if Rails.env.production? && Rails.application.credentials.dig(:r2, :public_url).present?
+      # 本番環境でR2のパブリックURLを使用
+      key = processed_image.respond_to?(:key) ? processed_image.key : image.key
+      "#{Rails.application.credentials.r2[:public_url]}/#{key}"
+    else
+      url_for(processed_image)
+    end
+  end
+
+  private
+
+  def apply_size_variant(image, size)
+    return image unless size && IMAGE_SIZES[size]
+
+    dimensions = IMAGE_SIZES[size]
+    image.variant(resize_to_limit: dimensions)
+  end
 end
