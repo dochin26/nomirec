@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :shop_place do
-    latitude { 1 }
-    longitude { 1 }
-    address { "MyString" }
+    association :shop
+    latitude { nil }
+    longitude { nil }
+    address { "東京都西東京市" }
   end
 end

@@ -47,4 +47,15 @@ RSpec.describe "Posts", type: :system do
 
     expect(page).to have_content("キリンビール")
   end
+
+  it "住所の検索ができる" do
+    sign_in user
+
+    create_post_with_relations(user: user)
+
+    # 検索パラメータを含むURLに直接アクセス
+    visit posts_path(q: { shop_name_or_shop_sakes_name_or_shop_foods_name_or_shop_shop_places_address_cont: "東京都西東京市" })
+
+    expect(page).to have_content("ラーメン")
+  end
 end
