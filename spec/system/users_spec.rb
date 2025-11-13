@@ -31,4 +31,25 @@ RSpec.describe "UserAuthentication", type: :system do
 
     expect(page).to have_content("ログアウトしました。")
   end
+
+  it "Google認証が成功する" do
+    # OmniAuthのモック設定をテスト実行前に行う
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      provider: 'google_oauth2',
+      uid: '12345abcde',
+      info: {
+        email: 'john@example.com',
+        name: 'John Doe'
+      }
+    })
+
+    # Railsのenv_configにも設定
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+
+    # 直接コールバックURLにアクセス（システムテストでより確実）
+    visit '/users/auth/google_oauth2/callback'
+    expect(page).to have_content('Googleアカウントでログインしました。')
+  end
 end

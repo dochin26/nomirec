@@ -78,10 +78,24 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Warden::Test::Helpers
   config.include FactoryBot::Syntax::Methods
 
   # Active Storageの一時ファイルをテスト後にクリーンアップ
   config.after(:each) do
     FileUtils.rm_rf(Rails.root.join('tmp/storage'))
+  end
+
+  OmniAuth.configure do |c|
+    c.test_mode = true
+    c.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      provider: "google_oauth2",
+      uid: "12345abcde",
+      info: {
+        email: "john@example.com",
+        name: "John Doe"
+      }
+    })
   end
 end
