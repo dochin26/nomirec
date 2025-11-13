@@ -6,6 +6,7 @@ module PostHelper
 
     create(:shop_sake, shop: shop, sake: sake)
     create(:shop_food, shop: shop, food: food)
+    create(:shop_place, shop: shop)
     create(:post, user: user, shop: shop)
   end
 end
