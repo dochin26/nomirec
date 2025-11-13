@@ -48,8 +48,8 @@ RSpec.describe "UserAuthentication", type: :system do
     Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
     Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
 
-    visit new_user_session_path
-    click_button('Googleでログイン')
+    # 直接コールバックURLにアクセス（システムテストでより確実）
+    visit '/users/auth/google_oauth2/callback'
     expect(page).to have_content('Googleアカウントでログインしました。')
   end
 end

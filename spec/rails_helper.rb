@@ -93,7 +93,8 @@ RSpec.configure do |config|
       provider: "google_oauth2",
       uid: "12345abcde",
       info: {
-        email: "john@example.com"
+        email: "john@example.com",
+        name: "John Doe"
       }
     })
   end
