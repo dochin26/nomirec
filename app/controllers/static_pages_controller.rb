@@ -4,4 +4,10 @@ class StaticPagesController < ApplicationController
 
   def test
   end
+
+  def terms
+  end
+
+  def privacy
+  end
 end

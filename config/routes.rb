@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
   root "static_pages#index"
+  get "terms", to: "static_pages#terms"
+  get "privacy", to: "static_pages#privacy"
   get "mypage", to: "my_pages#show"
   resource :account, only: %i[edit update]
   resources :posts, only: %i[index new show edit create update destroy] do
