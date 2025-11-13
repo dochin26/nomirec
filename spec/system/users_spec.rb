@@ -31,4 +31,10 @@ RSpec.describe "UserAuthentication", type: :system do
 
     expect(page).to have_content("ログアウトしました。")
   end
+
+  it "Google認証が成功する" do
+    visit new_user_session_path
+    click_button('Googleでログイン')
+    expect(page).to have_content('Googleアカウントでログインしました。')
+  end
 end
