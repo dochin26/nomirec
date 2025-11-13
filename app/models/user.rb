@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
+  validates :name, presence: true, length: { maximum: 20 }
   validate :acceptable_avatar
 
   def self.from_omniauth(auth)
