@@ -79,4 +79,9 @@ RSpec.configure do |config|
 
   config.include Devise::Test::IntegrationHelpers, type: :system
   config.include FactoryBot::Syntax::Methods
+
+  # Active Storageの一時ファイルをテスト後にクリーンアップ
+  config.after(:each) do
+    FileUtils.rm_rf(Rails.root.join('tmp/storage'))
+  end
 end
