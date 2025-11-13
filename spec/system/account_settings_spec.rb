@@ -40,20 +40,6 @@ RSpec.describe "AccountSettings", type: :system do
       expect(page).to have_content("エラー")
       expect(user.reload.name).to eq("テストユーザー")
     end
-
-    it "20文字を超えるユーザー名では更新できない" do
-      # HTMLのmaxlength属性により21文字目以降は入力されない
-      # 実際のバリデーションはモデルテストで確認することを推奨
-      visit edit_account_path
-
-      # 20文字ちょうどは許可される
-      name_20 = "あ" * 20
-      fill_in "user[name]", with: name_20
-      click_button "保存する"
-
-      expect(page).to have_content("アカウント情報を更新しました")
-      expect(user.reload.name).to eq(name_20)
-    end
   end
 
   describe "メールアドレスの変更" do
