@@ -33,6 +33,21 @@ RSpec.describe "UserAuthentication", type: :system do
   end
 
   it "Google認証が成功する" do
+    # OmniAuthのモック設定をテスト実行前に行う
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      provider: 'google_oauth2',
+      uid: '12345abcde',
+      info: {
+        email: 'john@example.com',
+        name: 'John Doe'
+      }
+    })
+
+    # Railsのenv_configにも設定
+    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+
     visit new_user_session_path
     click_button('Googleでログイン')
     expect(page).to have_content('Googleアカウントでログインしました。')
