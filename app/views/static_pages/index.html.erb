@@ -69,5 +69,14 @@
         <% end %>
       <% end %>
     </div>
+
+    <!-- 利用規約・プライバシーポリシーリンク -->
+    <div class="flex justify-center gap-6 pt-12 pb-20 text-sm">
+      <%= link_to "利用規約", terms_path, class: "text-gray-600 hover:text-orange-500 transition-colors underline" %>
+      <span class="text-gray-400">|</span>
+      <%= link_to "プライバシーポリシー", privacy_path, class: "text-gray-600 hover:text-orange-500 transition-colors underline" %>
+      <span class="text-gray-400">|</span>
+      <%= link_to "お問い合わせ", 'https://forms.gle/2QxrqdYLKYDjS2wE9', target: :_blank, class: "text-gray-600 hover:text-orange-500 transition-colors underline" %>
+    </div>
   </div>
 </div>
