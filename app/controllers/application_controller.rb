@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :store_redirect_location
   before_action :set_default_meta_tags
+  before_action :redirect_to_primary_domain
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -43,5 +44,22 @@ class ApplicationController < ActionController::Base
 
   def public_action?
     controller_name == "static_pages" && action_name == "index"
+  end
+
+  # fly.ioの標準ドメインからのアクセスをプライマリドメインにリダイレクト
+  def redirect_to_primary_domain
+    # 本番のみリダイレクトを有効化
+    return unless Rails.env.production?
+
+    primary_domain = "nomireq.com"
+
+    # すでに独自ドメインなら何もしない
+    return if request.host == primary_domain
+
+    # Let's Encrypt の ACME チャレンジは除外
+    return if request.path.start_with?("/.well-known")
+
+    # リダイレクト
+    redirect_to "#{request.protocol}#{primary_domain}#{request.fullpath}", status: :moved_permanently
   end
 end
