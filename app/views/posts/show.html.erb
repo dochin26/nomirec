@@ -61,12 +61,6 @@
     </div>
 
     <!-- Original Post Description -->
-    <div class="mb-6">
-      <label class="block text-sm font-medium text-gray-700">投稿者のコメント</label>
-      <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
-        <%= @post.user.name || @post.user.email %>さんの投稿
-      </div>
-    </div>
 
     <% if @post.body_image.attached? %>
       <%= image_tag image_url_for(@post.body_image), class: "w-64 h-auto" %>
