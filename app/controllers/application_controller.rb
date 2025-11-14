@@ -60,6 +60,8 @@ class ApplicationController < ActionController::Base
     return if request.path.start_with?("/.well-known")
 
     # リダイレクト
-    redirect_to "#{request.protocol}#{primary_domain}#{request.fullpath}", status: :moved_permanently
+    redirect_to "#{request.protocol}#{primary_domain}#{request.fullpath}",
+    status: :moved_permanently,
+    allow_other_host: true
   end
 end
