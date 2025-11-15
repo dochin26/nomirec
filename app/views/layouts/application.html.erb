@@ -42,6 +42,8 @@
       </div>
     </main>
     <%= render "layouts/footer" %>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>"></script>
+    <% if content_for?(:google_maps) %>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>"></script>
+    <% end %>
   </body>
 </html>
