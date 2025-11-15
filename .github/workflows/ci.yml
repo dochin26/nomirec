@@ -86,7 +86,7 @@ jobs:
       - name: Precompile assets for test
         env:
           RAILS_ENV: test
-        run: bin/rails assets:precompile
+        run: bin/rails assets:precompile && bin/rails tailwindcss:install
 
       - name: Run tests
         env:
