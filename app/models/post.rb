@@ -16,8 +16,8 @@ class Post < ApplicationRecord
   end
 
   validates_image_attachment :body_image,
-                              max_size: 10,
-                              allowed_types: [ "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif" ]
+                              max_size: ImageUpload::POST_IMAGE_MAX_SIZE_MB,
+                              allowed_types: ImageUpload::POST_IMAGE_ALLOWED_TYPES
 
   def self.ransackable_attributes(auth_object = nil)
     %w[id created_at updated_at shop_id user_id]

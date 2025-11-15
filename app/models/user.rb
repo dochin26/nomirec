@@ -15,8 +15,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 20 }
   validates_image_attachment :avatar,
-                              max_size: 5,
-                              allowed_types: [ "image/jpeg", "image/jpg", "image/png", "image/webp" ]
+                              max_size: ImageUpload::AVATAR_MAX_SIZE_MB,
+                              allowed_types: ImageUpload::AVATAR_ALLOWED_TYPES
 
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
