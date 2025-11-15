@@ -19,6 +19,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "turbo", type: "module" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_include_tag "map" %>
     <%= include_gon %>
   </head>
 
@@ -42,8 +43,6 @@
       </div>
     </main>
     <%= render "layouts/footer" %>
-    <% if content_for?(:google_maps) %>
-      <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>"></script>
-    <% end %>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>&callback=initMap"></script>
   </body>
 </html>
