@@ -45,6 +45,21 @@ ja:
     destroy_failed: "削除に失敗しました: %{error}"
     access_denied: "アクセスが拒否されました。"
 
+  # コメント
+  comments:
+    created: "コメントを投稿しました"
+    create_failed: "コメントの投稿に失敗しました"
+    destroyed: "コメントを削除しました"
+    destroy_failed: "コメントの削除に失敗しました"
+    access_denied: "権限がありません"
+
+  # いいね
+  likes:
+    created: "いいねしました"
+    create_failed: "いいねに失敗しました"
+    destroyed: "いいねを解除しました"
+    destroy_failed: "いいねの解除に失敗しました"
+
   # 投稿詳細
   post:
     shop_introduction: "店舗紹介"
