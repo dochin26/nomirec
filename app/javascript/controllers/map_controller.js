@@ -24,8 +24,25 @@ export default class extends Controller {
       this.initMap()
     } else {
       // APIがまだ読み込まれていない場合は、読み込みを待つ
-      window.initMap = () => this.initMap()
+      this.waitForGoogleMaps()
     }
+  }
+
+  waitForGoogleMaps() {
+    const checkInterval = setInterval(() => {
+      if (typeof google !== 'undefined' && google.maps) {
+        clearInterval(checkInterval)
+        this.initMap()
+      }
+    }, 100)
+
+    // 10秒後にタイムアウト
+    setTimeout(() => {
+      clearInterval(checkInterval)
+      if (!this.map) {
+        console.error('Google Maps API failed to load')
+      }
+    }, 10000)
   }
 
   /**
@@ -84,9 +101,14 @@ export default class extends Controller {
       }
     })
   }
-}
 
-// グローバル関数としてエクスポート（既存の実装との互換性のため）
-window.initMap = function() {
-  // Stimulusコントローラが処理するため、ここでは何もしない
+  disconnect() {
+    // クリーンアップ
+    if (this.currentMarker) {
+      this.currentMarker.setMap(null)
+    }
+    this.map = null
+    this.geocoder = null
+    this.currentMarker = null
+  }
 }
