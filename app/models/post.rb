@@ -93,6 +93,8 @@ class Post < ApplicationRecord
 
     private
 
+    # 投稿削除時に、関連するShopに他の投稿がない場合はShopも削除
+    # これにより、孤立したShopレコードが残るのを防ぐ
     def destroy_shop
         shop.destroy if shop && shop.posts.empty?
     end
