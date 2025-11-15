@@ -23,7 +23,7 @@
     <%= include_gon %>
   </head>
 
-  <body class="flex flex-col h-screen overflow-hidden" data-user-signed-in="<%= user_signed_in? %>">
+  <body class="static" data-user-signed-in="<%= user_signed_in? %>">
     <%= render "layouts/header" %>
 
     <!-- トーストメッセージコンテナ -->
