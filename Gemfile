@@ -73,7 +73,7 @@ end
 
 # Tailwind CSSをRailsで使うため
 gem "tailwindcss-rails"
-gem "tailwindcss-ruby", "3.4.17"
+gem "tailwindcss-ruby"
 
 gem "devise"
 
