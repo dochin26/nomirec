@@ -8,12 +8,12 @@ class LikesController < ApplicationController
     if like.save
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to request.referer, notice: "いいねしました" }
+        format.html { redirect_to request.referer, notice: t("likes.created") }
       end
     else
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("like_button_#{@shop.id}", partial: "likes/like_button", locals: { shop: @shop }) }
-        format.html { redirect_to request.referer, alert: "いいねに失敗しました" }
+        format.html { redirect_to request.referer, alert: t("likes.create_failed") }
       end
     end
   end
@@ -24,12 +24,12 @@ class LikesController < ApplicationController
     if like&.destroy
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to request.referer, notice: "いいねを解除しました" }
+        format.html { redirect_to request.referer, notice: t("likes.destroyed") }
       end
     else
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("like_button_#{@shop.id}", partial: "likes/like_button", locals: { shop: @shop }) }
-        format.html { redirect_to request.referer, alert: "いいねの解除に失敗しました" }
+        format.html { redirect_to request.referer, alert: t("likes.destroy_failed") }
       end
     end
   end

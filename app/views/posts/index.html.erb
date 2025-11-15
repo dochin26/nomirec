@@ -1,4 +1,7 @@
-<div class="container mx-auto px-4 pt-3">
+<div class="container mx-auto px-4 pt-3"
+     data-controller="modal"
+     data-modal-frame-id-value="post_modal"
+     data-modal-new-post-path-value="<%= new_post_path %>">
   <%= render 'search', q: @q, url: posts_path %>
 
   <!-- 掲示板一覧 -->
@@ -19,26 +22,3 @@
 <!-- モーダル用のTurbo Frame -->
 <turbo-frame id="post_modal">
 </turbo-frame>
-
-<% if params[:open_modal] == 'new' %>
-  <script>
-    // DOMContentLoadedとturbo:loadの両方に対応
-    function openModalFrame() {
-      const frame = document.getElementById('post_modal');
-      if (frame) {
-        frame.src = '<%= new_post_path %>';
-      }
-    }
-
-    // ページが既に読み込まれている場合（Turbo遷移）
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', openModalFrame);
-    } else {
-      // すでにDOMが読み込まれている場合
-      openModalFrame();
-    }
-
-    // Turbo遷移時にも対応
-    document.addEventListener('turbo:load', openModalFrame, { once: true });
-  </script>
-<% end %>

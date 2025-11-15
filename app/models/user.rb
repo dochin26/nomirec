@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include ImageValidatable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -12,7 +14,9 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   validates :name, presence: true, length: { maximum: 20 }
-  validate :acceptable_avatar
+  validates_image_attachment :avatar,
+                              max_size: ImageUpload::AVATAR_MAX_SIZE_MB,
+                              allowed_types: ImageUpload::AVATAR_ALLOWED_TYPES
 
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
@@ -22,21 +26,6 @@ class User < ApplicationRecord
       user.uid = auth.uid
       # パスワードは自動生成（OAuth認証時は不要）
       user.password = Devise.friendly_token[0, 20]
-    end
-  end
-
-  private
-
-  def acceptable_avatar
-    return unless avatar.attached?
-
-    unless avatar.byte_size <= 5.megabytes
-      errors.add(:avatar, "は5MB以下にしてください")
-    end
-
-    acceptable_types = [ "image/jpeg", "image/jpg", "image/png", "image/webp" ]
-    unless acceptable_types.include?(avatar.content_type)
-      errors.add(:avatar, "はJPEG、PNG、WebP形式で登録してください")
     end
   end
 end

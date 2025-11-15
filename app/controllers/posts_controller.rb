@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  include OgpHelper
+
   before_action :authenticate_user!, except: [ :index, :show, :autocomplete ]
   before_action :set_post, only: [ :show, :edit, :update, :destroy ]
   before_action :check_owner, only: [ :edit, :update, :destroy ]
@@ -24,7 +26,7 @@ class PostsController < ApplicationController
   def show
     @address = @post.shop.shop_places.pluck(:address).to_s
     gon.addresses = @address
-    set_post_meta_tags
+    set_post_meta_tags(@post)
   end
 
   def edit
@@ -89,15 +91,7 @@ class PostsController < ApplicationController
   end
 
   def autocomplete
-    query = "%#{params[:q]}%"
-    results = [
-      search_shops(query),
-      search_sakes(query),
-      search_foods(query),
-      search_addresses(query)
-    ].flatten
-
-    @results = results.uniq { |r| [ r[:type], r[:name], r[:address] ] }.first(10)
+    @results = Post.search_autocomplete(params[:q])
 
     respond_to do |format|
       format.html { render partial: "posts/autocomplete_results", locals: { results: @results } }
@@ -105,62 +99,6 @@ class PostsController < ApplicationController
   end
 
   private
-
-  def set_post_meta_tags
-    image_url = ogp_image_url(@post)
-
-    # デバッグ用ログ
-    Rails.logger.info "=== OGP Image URL: #{image_url} ==="
-
-    set_meta_tags(
-      title: "#{@post.shop.name} - NomireQ",
-      description: "特徴的なお酒や料理を共有しよう！ NomireQ",
-      og: {
-        title: @post.shop.name,
-        description: "特徴的なお酒や料理を共有しよう！ NomireQ",
-        type: "article",
-        url: post_url(@post),
-        image: image_url
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: @post.shop.name,
-        description: "特徴的なお酒や料理を共有しよう！ NomireQ",
-        image: image_url
-      }
-    )
-  end
-
-  def ogp_image_url(post)
-    if post.body_image.attached?
-      if Rails.env.production?
-        # 本番環境: Cloudflare R2の公開URLを使用
-        if Rails.application.credentials.dig(:r2, :public_url).present?
-          # 公開URLが設定されている場合（画像を直接参照）
-          "#{Rails.application.credentials.dig(:r2, :public_url)}/#{post.body_image.key}"
-        else
-          # polymorphic_urlで生成（署名付きURL）
-          begin
-            polymorphic_url(post.body_image.variant(resize_to_limit: [ 1200, 630 ]))
-          rescue => e
-            Rails.logger.error "Error generating image URL: #{e.message}"
-            polymorphic_url(post.body_image)
-          end
-        end
-      else
-        # 開発環境: ローカルのActive Storage URL
-        begin
-          polymorphic_url(post.body_image.variant(resize_to_limit: [ 1200, 630 ]))
-        rescue => e
-          Rails.logger.error "Error generating image URL: #{e.message}"
-          polymorphic_url(post.body_image)
-        end
-      end
-    else
-      # デフォルト画像のURL
-      ActionController::Base.helpers.asset_url("nomireq.jpg")
-    end
-  end
 
   def set_post
     @post = Post.includes(comments: :user, user: {}).find(params[:id])
@@ -197,57 +135,5 @@ class PostsController < ApplicationController
         shop_places_attributes: [ :id, :address, :_destroy ]
       ]
     )
-  end
-
-  # オートコンプリート検索メソッド
-  def search_shops(query)
-    Shop.joins(:posts)
-      .where("shops.name LIKE ?", query)
-      .select("DISTINCT shops.id, shops.name")
-      .order("shops.name ASC")
-      .limit(10)
-      .map { |shop| { type: "shop", name: shop.name, value: shop.name } }
-  end
-
-  def search_sakes(query)
-    Sake.where("sakes.name LIKE ?", query)
-      .includes(shops: [ :shop_places, :posts ])
-      .order("sakes.name ASC")
-      .limit(10)
-      .flat_map { |sake| build_item_results(sake, "sake") }
-  end
-
-  def search_foods(query)
-    Food.where("foods.name LIKE ?", query)
-      .includes(shops: [ :shop_places, :posts ])
-      .order("foods.name ASC")
-      .limit(10)
-      .flat_map { |food| build_item_results(food, "food") }
-  end
-
-  def search_addresses(query)
-    ShopPlace.joins(shop: :posts)
-      .where("shop_places.address LIKE ?", query)
-      .includes(:shop)
-      .select("DISTINCT shop_places.id, shop_places.address, shop_places.shop_id")
-      .order("shop_places.address ASC")
-      .limit(10)
-      .map { |place| { type: "address", name: place.shop.name, address: place.address, value: place.address } }
-  end
-
-  def build_item_results(item, type)
-    item.shops.flat_map do |shop|
-      next [] unless shop.posts.any?
-
-      shop.shop_places.map do |place|
-        {
-          type: type,
-          name: shop.name,
-          address: place.address,
-          value: item.name,
-          "#{type}_name".to_sym => item.name
-        }
-      end
-    end.compact
   end
 end

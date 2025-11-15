@@ -14,11 +14,11 @@ class CommentsController < ApplicationController
           render turbo_stream: [
             turbo_stream.append("comments_list", partial: "comments/comment", locals: { comment: @comment }),
             turbo_stream.replace("comment_form", partial: "comments/form", locals: { post: @post, comment: Comment.new }),
-            turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: "コメントを投稿しました", type: "success" })
+            turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: t("comments.created"), type: "success" })
           ]
         }
         format.html {
-          flash[:success] = "コメントを投稿しました"
+          flash[:success] = t("comments.created")
           redirect_to @post
         }
       else
@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
           render turbo_stream: turbo_stream.replace("comment_form", partial: "comments/form", locals: { post: @post, comment: @comment })
         }
         format.html {
-          flash.now[:danger] = "コメントの投稿に失敗しました"
+          flash.now[:danger] = t("comments.create_failed")
           redirect_to @post, status: :unprocessable_entity
         }
       end
@@ -40,21 +40,21 @@ class CommentsController < ApplicationController
       format.turbo_stream {
         render turbo_stream: [
           turbo_stream.remove("comment_#{@comment.id}"),
-          turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: "コメントを削除しました", type: "success" })
+          turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: t("comments.destroyed"), type: "success" })
         ]
       }
       format.html {
-        flash[:success] = "コメントを削除しました"
+        flash[:success] = t("comments.destroyed")
         redirect_to @post
       }
     end
   rescue => e
     respond_to do |format|
       format.turbo_stream {
-        render turbo_stream: turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: "コメントの削除に失敗しました", type: "error" })
+        render turbo_stream: turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: t("comments.destroy_failed"), type: "error" })
       }
       format.html {
-        flash[:alert] = "コメントの削除に失敗しました: #{e.message}"
+        flash[:alert] = t("comments.destroy_failed")
         redirect_to @post
       }
     end
@@ -74,10 +74,10 @@ class CommentsController < ApplicationController
     unless @comment.user == current_user
       respond_to do |format|
         format.turbo_stream {
-          render turbo_stream: turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: "権限がありません", type: "error" })
+          render turbo_stream: turbo_stream.append("toast_container", partial: "shared/toast", locals: { message: t("comments.access_denied"), type: "error" })
         }
         format.html {
-          redirect_to @post, alert: "権限がありません"
+          redirect_to @post, alert: t("comments.access_denied")
         }
       end
     end

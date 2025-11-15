@@ -8,16 +8,30 @@ import { Controller } from "@hotwired/stimulus"
  * - Escキーで閉じる
  * - 背景クリックで閉じる
  * - アニメーション対応
+ * - URLパラメータからの自動モーダル表示
  */
 export default class extends Controller {
   static targets = ["container", "backdrop", "panel"]
+  static values = {
+    frameId: String,
+    newPostPath: String
+  }
 
   connect() {
     // Escキーでモーダルを閉じる
     this.handleKeydown = this.handleKeydown.bind(this)
 
-    // connectされた時点で自動的にモーダルを開く
-    this.open()
+    // URLパラメータをチェック
+    const urlParams = new URLSearchParams(window.location.search)
+    const openModal = urlParams.get('open_modal')
+
+    if (openModal === 'new' && this.hasFrameIdValue && this.hasNewPostPathValue) {
+      // URLパラメータからモーダルを開く
+      this.openFrameFromUrl()
+    } else if (this.hasContainerTarget) {
+      // 通常のモーダル（Turbo Frameから呼び出された場合）
+      this.open()
+    }
   }
 
   disconnect() {
@@ -94,6 +108,16 @@ export default class extends Controller {
   handleKeydown(event) {
     if (event.key === "Escape") {
       this.close()
+    }
+  }
+
+  /**
+   * URLパラメータからTurbo Frameを開く
+   */
+  openFrameFromUrl() {
+    const frame = document.getElementById(this.frameIdValue)
+    if (frame) {
+      frame.src = this.newPostPathValue
     }
   }
 }
