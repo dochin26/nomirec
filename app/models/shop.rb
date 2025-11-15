@@ -23,38 +23,37 @@ class Shop < ApplicationRecord
 
     # スペース区切りの文字列から酒のタグを更新
     def update_sake_tags(sake_names_string)
-        return if sake_names_string.nil?
-
-        # 全角・半角スペースで分割
-        sake_names = sake_names_string.split(/[[:space:]]+/).reject(&:blank?)
-
-        # 新しいsakeのIDリストを作成
-        new_sake_ids = sake_names.map do |name|
-            Sake.find_or_create_by!(name: name).id
-        end
-
-        # 既存の関連を完全に置き換え
-        self.sake_ids = new_sake_ids
+        update_tags(sake_names_string, :sakes)
     end
 
     # スペース区切りの文字列から料理のタグを更新
     def update_food_tags(food_names_string)
-        return if food_names_string.nil?
-
-        # 全角・半角スペースで分割
-        food_names = food_names_string.split(/[[:space:]]+/).reject(&:blank?)
-
-        # 新しいfoodのIDリストを作成
-        new_food_ids = food_names.map do |name|
-            Food.find_or_create_by!(name: name).id
-        end
-
-        # 既存の関連を完全に置き換え
-        self.food_ids = new_food_ids
+        update_tags(food_names_string, :foods)
     end
 
     # ユーザーがこの店をいいねしているかどうか
     def liked_by?(user)
         likes.exists?(user_id: user.id)
+    end
+
+    private
+
+    # スペース区切りの文字列からタグを更新する共通メソッド
+    def update_tags(tags_string, association_name)
+        return if tags_string.nil?
+
+        # 全角・半角スペースで分割
+        tag_names = tags_string.split(/[[:space:]]+/).reject(&:blank?)
+
+        # モデルクラスを取得 (例: :sakes -> Sake)
+        model_class = association_name.to_s.singularize.classify.constantize
+
+        # 新しいタグのIDリストを作成
+        new_tag_ids = tag_names.map do |name|
+            model_class.find_or_create_by!(name: name).id
+        end
+
+        # 既存の関連を完全に置き換え
+        self.send("#{association_name.to_s.singularize}_ids=", new_tag_ids)
     end
 end
