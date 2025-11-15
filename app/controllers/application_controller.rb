@@ -42,10 +42,6 @@ class ApplicationController < ActionController::Base
     )
   end
 
-  def public_action?
-    controller_name == "static_pages" && action_name == "index"
-  end
-
   # fly.ioの標準ドメインからのアクセスをプライマリドメインにリダイレクト
   def redirect_to_primary_domain
     # 本番のみリダイレクトを有効化
