@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+    include ImageValidatable
+
     belongs_to  :shop
     belongs_to  :user
     has_many    :comments, dependent: :destroy
@@ -13,7 +15,9 @@ class Post < ApplicationRecord
     attachable.variant :large, resize_to_limit: [ 1200, 900 ], preprocessed: true
   end
 
-  validate :acceptable_image
+  validates_image_attachment :body_image,
+                              max_size: 10,
+                              allowed_types: [ "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif" ]
 
     def self.ransackable_attributes(auth_object = nil)
         %w[id created_at updated_at shop_id user_id]
@@ -91,18 +95,5 @@ class Post < ApplicationRecord
 
     def destroy_shop
         shop.destroy if shop && shop.posts.empty?
-    end
-
-    def acceptable_image
-        return unless body_image.attached?
-
-        unless body_image.byte_size <= 10.megabytes
-            errors.add(:body_image, "は10MB以下にしてください")
-        end
-
-        acceptable_types = [ "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif" ]
-        unless acceptable_types.include?(body_image.content_type)
-            errors.add(:body_image, "はJPEG、PNG、WebP、GIF形式で登録してください")
-        end
     end
 end
