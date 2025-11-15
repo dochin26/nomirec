@@ -23,7 +23,7 @@ module ImageValidatable
 
     # ファイル形式のバリデーション
     unless allowed_types.include?(attachment.content_type)
-      format_names = allowed_types.map { |type| type.split('/').last.upcase }.join("、")
+      format_names = allowed_types.map { |type| type.split("/").last.upcase }.join("、")
       errors.add(attribute, "は#{format_names}形式で登録してください")
     end
   end
