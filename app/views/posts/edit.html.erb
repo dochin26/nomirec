@@ -22,7 +22,11 @@
               <%= place_fields.text_field :address, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
             </div>
             <label class="block text-sm font-medium text-gray-700 mt-4">Map</label>
-            <div id="map" style="height: 400px; width: 100%;" class="mb-4"></div>
+            <div data-controller="map"
+                 data-map-address-value="<%= @address %>"
+                 data-map-target="container"
+                 style="height: 400px; width: 100%;"
+                 class="mb-4"></div>
           <% end %>
 
           <h4 class="text-lg font-semibold text-gray-800 mb-3 border-b pb-2">お酒</h4>
