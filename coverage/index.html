@@ -13,7 +13,7 @@
       <img src="./assets/0.13.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2025-11-15T22:27:43+09:00">2025-11-15T22:27:43+09:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2025-11-17T00:43:55+09:00">2025-11-17T00:43:55+09:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -22,14 +22,14 @@
     <span class="group_name">All Files</span>
     (<span class="covered_percent">
       <span class="red">
-  77.08%
+  77.32%
 </span>
 
      </span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         21.32
+         21.31
        </span>
     </span> hits/line
     )
@@ -42,11 +42,11 @@
   </div>
 
   <div class="t-line-summary">
-    <b>384</b> relevant lines,
-    <span class="green"><b>296</b> lines covered</span> and
+    <b>388</b> relevant lines,
+    <span class="green"><b>300</b> lines covered</span> and
     <span class="red"><b>88</b> lines missed. </span>
     (<span class="red">
-  77.08%
+  77.32%
 </span>
 )
   </div>
@@ -204,11 +204,11 @@
           <tr class="t-file">
             <td class="strong t-file__name"><a href="#25c33138920bd67a438736528607f31e1e64667c" class="src_link" title="app/helpers/posts_helper.rb">app/helpers/posts_helper.rb</a></td>
             <td class="green strong cell--number t-file__coverage">100.00 %</td>
-            <td class="cell--number">3</td>
-            <td class="cell--number">1</td>
-            <td class="cell--number">1</td>
+            <td class="cell--number">12</td>
+            <td class="cell--number">5</td>
+            <td class="cell--number">5</td>
             <td class="cell--number">0</td>
-            <td class="cell--number">1.00</td>
+            <td class="cell--number">16.40</td>
             
           </tr>
         
@@ -6039,7 +6039,7 @@
 
             
 
-            <code class="ruby">      ActionController::Base.helpers.asset_url(&quot;nomireq.jpg&quot;)</code>
+            <code class="ruby">      ActionController::Base.helpers.asset_url(&quot;nomireq_logo.jpg&quot;)</code>
           </li>
         </div>
       
@@ -6360,8 +6360,8 @@
     
 
     <div class="t-line-summary">
-      <b>1</b> relevant lines.
-      <span class="green"><b>1</b> lines covered</span> and
+      <b>5</b> relevant lines.
+      <span class="green"><b>5</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
 
@@ -6396,6 +6396,104 @@
       
         <div>
           <li class="never" data-hits="" data-linenumber="3">
+            
+
+            
+
+            <code class="ruby"></code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="4">
+            
+
+            
+
+            <code class="ruby">  # 投稿の画像URLを取得（画像がない場合はデフォルト画像を返す）</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="5">
+            
+              <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  def post_image_url(post, size: :medium)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="40" data-linenumber="6">
+            
+              <span class="hits">40</span>
+            
+
+            
+
+            <code class="ruby">    if post.body_image.attached?</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="7">
+            
+              <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">      image_url_for(post.body_image, size: size)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="8">
+            
+
+            
+
+            <code class="ruby">    else</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="39" data-linenumber="9">
+            
+              <span class="hits">39</span>
+            
+
+            
+
+            <code class="ruby">      asset_path(&quot;nomireq_logo.jpg&quot;)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="10">
+            
+
+            
+
+            <code class="ruby">    end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="11">
+            
+
+            
+
+            <code class="ruby">  end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="12">
             
 
             
@@ -6954,7 +7052,7 @@
 
             
 
-            <code class="ruby">      format_names = allowed_types.map { |type| type.split(&#39;/&#39;).last.upcase }.join(&quot;、&quot;)</code>
+            <code class="ruby">      format_names = allowed_types.map { |type| type.split(&quot;/&quot;).last.upcase }.join(&quot;、&quot;)</code>
           </li>
         </div>
       

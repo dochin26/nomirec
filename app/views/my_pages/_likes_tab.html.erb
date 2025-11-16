@@ -75,7 +75,7 @@
           <div class="pt-3 flex items-center gap-3">
             <%= render 'likes/like_button', shop: like.shop %>
             <% if like.shop.posts.any? %>
-              <%= render 'shared/x_share_button', shop_name: like.shop.name, share_url: post_url(like.shop.posts.first), size: 'sm' %>
+              <%= render 'shared/x_share_button', shop_name: like.shop.name, shop_intro: like.shop.introduction, share_url: post_url(like.shop.posts.first), size: 'sm' %>
             <% end %>
           </div>
         </div>

@@ -11,6 +11,9 @@ import { Controller } from "@hotwired/stimulus"
  */
 export default class extends Controller {
   static targets = ["input", "preview", "placeholder", "fileName", "fileSize", "removeButton"]
+  static values = {
+    existingImageUrl: String
+  }
 
   // 定数
   static MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
@@ -18,6 +21,28 @@ export default class extends Controller {
 
   connect() {
     this.setupDragAndDrop()
+    this.displayExistingImage()
+  }
+
+  /**
+   * 既存画像がある場合、初期表示
+   */
+  displayExistingImage() {
+    if (this.existingImageUrlValue && this.existingImageUrlValue !== '') {
+      // プレビュー画像を表示
+      this.previewTarget.src = this.existingImageUrlValue
+      this.previewTarget.classList.remove("hidden")
+
+      // プレースホルダーを非表示
+      if (this.hasPlaceholderTarget) {
+        this.placeholderTarget.classList.add("hidden")
+      }
+
+      // 削除ボタンを表示
+      if (this.hasRemoveButtonTarget) {
+        this.removeButtonTarget.classList.remove("hidden")
+      }
+    }
   }
 
   /**

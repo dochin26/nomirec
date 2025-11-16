@@ -1,14 +1,12 @@
 <div id="post-id-<%= post.id %>" class="group">
   <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden h-full border border-gray-100 hover:border-orange-200">
     <!-- 画像セクション -->
-    <% if post.body_image.attached? %>
-      <div class="relative overflow-hidden aspect-video bg-gradient-to-br from-orange-50 to-pink-50">
-        <%= link_to image_tag(image_url_for(post.body_image, size: :medium),
-            loading: "lazy",
-            class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"),
-            post_path(post) %>
-      </div>
-    <% end %>
+    <div class="relative overflow-hidden aspect-video bg-gradient-to-br from-orange-50 to-pink-50">
+      <%= link_to image_tag(post_image_url(post, size: :medium),
+          loading: "lazy",
+          class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"),
+          post_path(post) %>
+    </div>
 
     <div class="p-6 space-y-4">
       <!-- ヘッダー: タイトルとアクションボタン -->
@@ -109,7 +107,7 @@
       <!-- いいねボタンとシェアボタン -->
       <div class="pt-3 flex items-center gap-3">
         <%= render 'likes/like_button', shop: post.shop %>
-        <%= render 'shared/x_share_button', shop_name: post.shop.name, share_url: post_url(post), size: 'sm' %>
+        <%= render 'shared/x_share_button', shop_name: post.shop.name, shop_intro: post.shop.introduction, share_url: post_url(post), size: 'sm' %>
       </div>
     </div>
   </div>

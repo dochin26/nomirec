@@ -1,117 +1,165 @@
-<div class="min-h-screen flex flex-col items-center justify-center">
-  <div class="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8">
-    <!-- Shop Information -->
-    <div class="mb-6">
-      <div class="mb-3">
-        <label class="block text-sm font-medium text-gray-700">Shop Name</label>
-        <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
-          <%= @post.shop.name %>
-        </div>
-      </div>
-      <div class="mb-3">
-        <label class="block text-sm font-medium text-gray-700">Introduction</label>
-        <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full min-h-[80px]">
-          <%= @post.shop.introduction %>
-        </div>
+<div class="min-h-screen bg-gray-50 pb-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- メインカード -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+      <!-- 店舗画像 -->
+      <div class="relative overflow-hidden aspect-video bg-gradient-to-br from-orange-50 to-pink-50">
+        <%= image_tag post_image_url(@post, size: :large),
+            class: "w-full h-full object-cover",
+            alt: @post.shop.name %>
       </div>
 
-      <% @post.shop.shop_places.each do |place| %>
-        <div class="mb-3">
-          <label class="block text-sm font-medium text-gray-700">Address</label>
-          <div class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
-            <%= place.address %>
-          </div>
-          <% place.address = @address %>
-          <label class="block text-sm font-medium text-gray-700 mt-4">Map</label>
-          <div id="map" style="height: 400px; width: 100%;" class="mb-4"></div>
-        </div>
-      <% end %>
+      <div class="p-6 space-y-6">
+        <!-- ヘッダー: 店名と編集・削除ボタン -->
+        <div class="flex justify-between items-start gap-3">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 flex-1">
+            <%= @post.shop.name %>
+          </h1>
 
-      <!-- Sakes -->
-      <div class="mb-4">
-        <h4 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">お酒</h4>
-        <% if @post.shop.sakes.any? %>
-          <div class="flex flex-wrap gap-2">
-            <% @post.shop.sakes.each do |sake| %>
-              <span class="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                <%= sake.name %>
-              </span>
-            <% end %>
+          <% if current_user && current_user == @post.user %>
+            <div class="flex gap-2">
+              <%= link_to edit_post_path(@post), class: "p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              <% end %>
+              <%= link_to post_path(@post),
+                  data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' },
+                  class: "p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- 店舗紹介 -->
+        <% if @post.shop.introduction.present? %>
+          <div class="bg-gradient-to-r from-orange-50 to-pink-50 rounded-xl p-4">
+            <p class="text-sm sm:text-base text-gray-700 leading-relaxed"><%= @post.shop.introduction %></p>
           </div>
-        <% else %>
-          <p class="text-gray-500 text-sm">登録されていません</p>
         <% end %>
-      </div>
 
-      <!-- Foods -->
-      <div class="mb-4">
-        <h4 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">料理</h4>
-        <% if @post.shop.foods.any? %>
-          <div class="flex flex-wrap gap-2">
-            <% @post.shop.foods.each do |food| %>
-              <span class="inline-block bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                <%= food.name %>
-              </span>
-            <% end %>
+        <!-- 住所 -->
+        <% if @post.shop.shop_places.present? %>
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span class="text-sm font-semibold">住所</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <% @post.shop.shop_places.each do |place| %>
+                <span class="px-3 py-1.5 bg-green-100 text-green-700 text-sm font-medium rounded-full"><%= place.address %></span>
+              <% end %>
+            </div>
+
+            <!-- Google Map -->
+            <div class="mt-4 rounded-xl overflow-hidden shadow-md">
+              <div id="map" style="height: 300px; width: 100%;"></div>
+            </div>
           </div>
-        <% else %>
-          <p class="text-gray-500 text-sm">登録されていません</p>
         <% end %>
+
+        <!-- お酒 -->
+        <% if @post.shop.sakes.present? %>
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 text-gray-600">
+              <span class="text-xl">🍶</span>
+              <span class="text-sm font-semibold">お酒</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <% @post.shop.sakes.each do |sake| %>
+                <span class="px-3 py-1.5 bg-purple-100 text-purple-700 text-sm font-medium rounded-full"><%= sake.name %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- 料理 -->
+        <% if @post.shop.foods.present? %>
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 text-gray-600">
+              <span class="text-xl">🍖</span>
+              <span class="text-sm font-semibold">料理</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <% @post.shop.foods.each do |food| %>
+                <span class="px-3 py-1.5 bg-orange-100 text-orange-700 text-sm font-medium rounded-full"><%= food.name %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- 投稿者・日付情報 -->
+        <div class="pt-4 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500">
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span><%= @post.user.name if @post.user %></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span><%= l @post.created_at, format: :short %></span>
+          </div>
+        </div>
+
+        <!-- いいねボタンとシェアボタン -->
+        <div class="pt-4 flex items-center justify-center gap-4">
+          <%= render 'likes/like_button', shop: @post.shop %>
+          <%= render 'shared/x_share_button', shop_name: @post.shop.name, shop_intro: @post.shop.introduction, share_url: post_url(@post) %>
+        </div>
       </div>
     </div>
 
-    <!-- Original Post Description -->
-
-    <% if @post.body_image.attached? %>
-      <%= image_tag image_url_for(@post.body_image), class: "w-64 h-auto" %>
-    <% end %>
-
-    <!-- いいねボタンとシェアボタン -->
-    <div class="mb-4 flex justify-center items-center gap-3">
-      <%= render 'likes/like_button', shop: @post.shop %>
-      <%= render 'shared/x_share_button', shop_name: @post.shop.name, share_url: post_url(@post) %>
-    </div>
-
-    <!-- Comments Section -->
-    <div class="mt-8 pt-6 border-t border-gray-200">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+    <!-- コメントセクション -->
+    <div class="mt-6 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
         コメント (<%= @post.comments.count %>)
-      </h3>
+      </h2>
 
-      <!-- Comments List -->
+      <!-- コメント一覧 -->
       <div id="comments_list" class="mb-6">
         <% if @post.comments.any? %>
           <%= render @post.comments %>
         <% else %>
-          <p class="text-gray-500 text-sm text-center py-8">まだコメントがありません</p>
+          <div class="text-center py-12 bg-gray-50 rounded-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <p class="text-gray-500 text-sm">まだコメントがありません</p>
+          </div>
         <% end %>
       </div>
 
-      <!-- Comment Form -->
+      <!-- コメント投稿フォーム -->
       <% if user_signed_in? %>
         <%= render 'comments/form', post: @post, comment: Comment.new %>
       <% else %>
-        <div class="text-center py-4 bg-gray-50 rounded-lg">
-          <p class="text-gray-600 mb-2">コメントするにはログインが必要です</p>
-          <%= link_to "ログイン", new_user_session_path, class: "text-blue-600 hover:text-blue-800 font-medium" %>
+        <div class="text-center py-6 bg-gradient-to-r from-orange-50 to-pink-50 rounded-xl">
+          <p class="text-gray-700 mb-3 font-medium">コメントするにはログインが必要です</p>
+          <%= link_to "ログイン", new_user_session_path, class: "inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition" %>
         </div>
       <% end %>
     </div>
 
-    <!-- Buttons -->
-    <div class="flex justify-between pt-4 mt-6">
-    <% if current_user && current_user == @post.user %>
-    <div>
-      <%= link_to "戻る", posts_path,
-        class: "px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg shadow-sm transition" %>
-    </div>
-    <% end %>
-    <% if current_user && current_user == @post.user %>
-    <div>
-      <%= link_to "削除", post_path(@post), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "btn px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm transition border-0"  %>
-      <%= link_to "編集する", edit_post_path(@post), class: "px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition cursor-pointer" %>
-    </div>
-    <% end %>
+    <!-- 戻るボタン -->
+    <div class="mt-6 flex justify-center">
+      <%= link_to posts_path, class: "inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-lg shadow-md transition border border-gray-200" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        一覧に戻る
+      <% end %>
     </div>
   </div>
 </div>
