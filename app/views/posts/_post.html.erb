@@ -107,7 +107,7 @@
       <!-- いいねボタンとシェアボタン -->
       <div class="pt-3 flex items-center gap-3">
         <%= render 'likes/like_button', shop: post.shop %>
-        <%= render 'shared/x_share_button', shop_name: post.shop.name, share_url: post_url(post), size: 'sm' %>
+        <%= render 'shared/x_share_button', shop_name: post.shop.name, shop_intro: post.shop.introduction, share_url: post_url(post), size: 'sm' %>
       </div>
     </div>
   </div>

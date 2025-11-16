@@ -67,7 +67,7 @@
     <!-- いいねボタンとシェアボタン -->
     <div class="mb-4 flex justify-center items-center gap-3">
       <%= render 'likes/like_button', shop: @post.shop %>
-      <%= render 'shared/x_share_button', shop_name: @post.shop.name, share_url: post_url(@post) %>
+      <%= render 'shared/x_share_button', shop_name: @post.shop.name, shop_intro: @post.shop.name, share_url: post_url(@post) %>
     </div>
 
     <!-- Comments Section -->

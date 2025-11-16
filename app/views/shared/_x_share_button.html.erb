@@ -7,8 +7,9 @@ end %>
 <% icon_classes = size == 'sm' ? 'h-4 w-4' : 'h-5 w-5' %>
 <% text_classes = size == 'sm' ? 'font-bold' : 'text-sm font-bold' %>
 
-<% share_text = "#{shop_name} " %>
-<%= link_to "https://x.com/intent/tweet?text=レア度の高いお店を共有します%0A#{ERB::Util.url_encode(share_text)}%0A%23NomireQ",
+<% name_text = "#{shop_name} " %>
+<% intro_text = "#{shop_intro} " %>
+<%= link_to "https://x.com/intent/tweet?text=#{ERB::Util.url_encode(name_text)}%0A#{ERB::Util.url_encode(intro_text)}%0A%23NomireQ",
             target: "_blank",
             rel: "noopener noreferrer",
             class: button_classes do %>
