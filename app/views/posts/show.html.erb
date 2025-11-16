@@ -62,9 +62,7 @@
 
     <!-- Original Post Description -->
 
-    <% if @post.body_image.attached? %>
-      <%= image_tag image_url_for(@post.body_image), class: "w-64 h-auto" %>
-    <% end %>
+    <%= image_tag post_image_url(@post), class: "w-64 h-auto" %>
 
     <!-- いいねボタンとシェアボタン -->
     <div class="mb-4 flex justify-center items-center gap-3">
