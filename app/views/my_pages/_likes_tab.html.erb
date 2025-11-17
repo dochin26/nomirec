@@ -1,82 +1,103 @@
 <% if likes.any? %>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <% likes.each do |like| %>
-      <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-pink-200">
-        <div class="p-6 space-y-4">
-          <!-- 店舗名 -->
-          <h3 class="text-xl font-bold text-gray-800 hover:text-pink-600 transition-colors">
-            <%= like.shop.name %>
-          </h3>
-
-          <!-- 店舗紹介 -->
-          <% if like.shop.introduction.present? %>
-            <div class="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-4">
-              <p class="text-sm text-gray-700 leading-relaxed"><%= like.shop.introduction %></p>
-            </div>
-          <% end %>
-
-          <!-- 住所 -->
-          <% if like.shop.shop_places.present? %>
-            <div class="space-y-2">
-              <div class="flex items-center gap-2 text-gray-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span class="text-xs font-semibold">住所</span>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <% like.shop.shop_places.each do |place| %>
-                  <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full"><%= place.address %></span>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-
-          <!-- お酒 -->
-          <% if like.shop.sakes.present? %>
-            <div class="space-y-2">
-              <div class="flex items-center gap-2 text-gray-600">
-                <span class="text-lg">🍶</span>
-                <span class="text-xs font-semibold">お酒</span>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <% like.shop.sakes.each do |sake| %>
-                  <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full"><%= sake.name %></span>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-
-          <!-- 料理 -->
-          <% if like.shop.foods.present? %>
-            <div class="space-y-2">
-              <div class="flex items-center gap-2 text-gray-600">
-                <span class="text-lg">🍖</span>
-                <span class="text-xs font-semibold">料理</span>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <% like.shop.foods.each do |food| %>
-                  <span class="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full"><%= food.name %></span>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-
-          <!-- いいね日時 -->
-          <div class="pt-4 border-t border-gray-200 flex items-center gap-1 text-xs text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-            <span><%= l like.created_at, format: :short %></span>
+      <% first_post = like.shop.posts.first %>
+      <div class="group">
+        <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden h-full border border-gray-100 hover:border-pink-200">
+          <!-- 画像セクション -->
+          <div class="relative overflow-hidden aspect-video bg-gradient-to-br from-pink-50 to-purple-50">
+            <% if first_post %>
+              <%= link_to image_tag(post_image_url(first_post, size: :medium),
+                  loading: "lazy",
+                  class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"),
+                  post_path(first_post) %>
+            <% else %>
+              <%= image_tag asset_path("nomireq_logo.jpg"),
+                  loading: "lazy",
+                  class: "w-full h-full object-cover" %>
+            <% end %>
           </div>
 
-          <!-- いいねボタンとシェアボタン -->
-          <div class="pt-3 flex items-center gap-3">
-            <%= render 'likes/like_button', shop: like.shop %>
-            <% if like.shop.posts.any? %>
-              <%= render 'shared/x_share_button', shop_name: like.shop.name, shop_intro: like.shop.introduction, share_url: post_url(like.shop.posts.first), size: 'sm' %>
+          <div class="p-6 space-y-4">
+            <!-- 店舗名 -->
+            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">
+              <% if first_post %>
+                <%= link_to like.shop.name, post_path(first_post), class: "hover:underline" %>
+              <% else %>
+                <%= like.shop.name %>
+              <% end %>
+            </h3>
+
+            <!-- 店舗紹介 -->
+            <% if like.shop.introduction.present? %>
+              <div class="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-4">
+                <p class="text-sm text-gray-700 leading-relaxed"><%= like.shop.introduction %></p>
+              </div>
             <% end %>
+
+            <!-- 住所 -->
+            <% if like.shop.shop_places.present? %>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2 text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span class="text-xs font-semibold">住所</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <% like.shop.shop_places.each do |place| %>
+                    <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full"><%= place.address %></span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- お酒 -->
+            <% if like.shop.sakes.present? %>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2 text-gray-600">
+                  <span class="text-lg">🍶</span>
+                  <span class="text-xs font-semibold">お酒</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <% like.shop.sakes.each do |sake| %>
+                    <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full"><%= sake.name %></span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- 料理 -->
+            <% if like.shop.foods.present? %>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2 text-gray-600">
+                  <span class="text-lg">🍖</span>
+                  <span class="text-xs font-semibold">料理</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <% like.shop.foods.each do |food| %>
+                    <span class="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full"><%= food.name %></span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- いいね日時 -->
+            <div class="pt-4 border-t border-gray-200 flex items-center gap-1 text-xs text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              <span><%= l like.created_at, format: :short %></span>
+            </div>
+
+            <!-- いいねボタンとシェアボタン -->
+            <div class="pt-3 flex items-center gap-3">
+              <%= render 'likes/like_button', shop: like.shop %>
+              <% if first_post %>
+                <%= render 'shared/x_share_button', shop_name: like.shop.name, shop_intro: like.shop.introduction, share_url: post_url(first_post), size: 'sm' %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
