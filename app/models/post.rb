@@ -37,7 +37,7 @@ class Post < ApplicationRecord
       search_addresses(search_query)
     ].flatten
 
-    results.uniq { |r| [ r[:type], r[:name], r[:address] ] }.first(10)
+    results.uniq { |r| r[:shop_id] }.first(10)
   end
 
   def self.search_shops(query)
@@ -46,7 +46,7 @@ class Post < ApplicationRecord
       .select("DISTINCT shops.id, shops.name")
       .order("shops.name ASC")
       .limit(10)
-      .map { |shop| { type: "shop", name: shop.name, value: shop.name } }
+      .map { |shop| { type: "shop", name: shop.name, value: shop.name, shop_id: shop.id } }
   end
 
   def self.search_sakes(query)
@@ -72,7 +72,7 @@ class Post < ApplicationRecord
       .select("DISTINCT shop_places.id, shop_places.address, shop_places.shop_id")
       .order("shop_places.address ASC")
       .limit(10)
-      .map { |place| { type: "address", name: place.shop.name, address: place.address, value: place.address } }
+      .map { |place| { type: "address", name: place.shop.name, address: place.address, value: place.address, shop_id: place.shop_id } }
   end
 
   def self.build_item_results(item, type)
@@ -85,7 +85,8 @@ class Post < ApplicationRecord
           name: shop.name,
           address: place.address,
           value: item.name,
-          "#{type}_name".to_sym => item.name
+          "#{type}_name".to_sym => item.name,
+          shop_id: shop.id
         }
       end
     end.compact

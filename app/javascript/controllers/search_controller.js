@@ -24,10 +24,11 @@ export default class extends Controller {
    */
   submitForm() {
     // オートコンプリートの値が入力フィールドに反映されるまで待機
+    // 少し長めの遅延を設定して、値が確実に反映されるようにする
     setTimeout(() => {
       this.formTarget.requestSubmit()
       this.resetEnterCount()
-    }, this.constructor.AUTOCOMPLETE_DELAY_MS)
+    }, 200)
   }
 
   /**
