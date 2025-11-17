@@ -1,5 +1,5 @@
 <% results.each_with_index do |result, index| %>
-  <li class="autocomplete-result-item" role="option" data-autocomplete-value="<%= result[:name] %>" data-index="<%= index %>">
+  <li class="autocomplete-result-item" role="option" data-autocomplete-value="<%= result[:name] %>" data-autocomplete-label="<%= result[:name] %>" data-index="<%= index %>">
     <% if result[:type] == "shop" %>
       <span class="font-medium"><%= result[:name] %></span>
     <% elsif result[:type] == "sake" %>

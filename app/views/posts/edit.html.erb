@@ -42,31 +42,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <%= place_fields.label :address, "住所検索", class: "text-sm font-semibold text-gray-700" %>
+                <%= place_fields.label :address, "住所", class: "text-sm font-semibold text-gray-700" %>
               </div>
-              <%= place_fields.text_field :address, id: "address-input", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-3 transition mb-2", placeholder: "例: 東京都渋谷区〇〇 または 店舗名 (Enterで検索)" %>
-              <p class="text-xs text-gray-500 mb-3">※住所または店舗名を入力してEnterキーを押してください</p>
-
-              <!-- 緯度経度のhidden fields -->
-              <%= place_fields.hidden_field :latitude, id: "latitude-input" %>
-              <%= place_fields.hidden_field :longitude, id: "longitude-input" %>
-
-              <!-- 現在地ボタン -->
-              <button type="button"
-                      id="current-location-btn"
-                      class="mb-4 inline-flex items-center gap-2 px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg shadow-sm transition-all hover:shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                現在地を取得
-              </button>
+              <%= place_fields.text_field :address, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-3 transition mb-4" %>
 
               <!-- Google Map -->
               <div class="rounded-xl overflow-hidden shadow-md">
                 <div id="map" style="height: 300px; width: 100%;"></div>
               </div>
-              <p class="text-xs text-gray-500 mt-2">※地図をクリックすると、その場所の住所が自動入力されます</p>
             </div>
           <% end %>
 
