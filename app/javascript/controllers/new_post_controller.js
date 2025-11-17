@@ -4,8 +4,7 @@ import { Controller } from "@hotwired/stimulus"
  * 新規投稿ボタンの動作を制御するStimulusコントローラー
  *
  * 機能:
- * - postsページにいる場合: Turbo Frameでモーダルを開く
- * - それ以外のページ: postsページに遷移してからモーダルを開く
+ * - どのページからでもTurbo Frameでモーダルを開く
  * - 未ログイン時: サーバー側で認証チェック
  */
 export default class extends Controller {
@@ -21,19 +20,11 @@ export default class extends Controller {
       return
     }
 
-    // ログイン済み: モーダルを開く処理
-    const currentPath = window.location.pathname
-
-    // postsページにいるかチェック
-    if (currentPath === '/posts' || currentPath.startsWith('/posts?')) {
-      // postsページにいる場合: Turbo Frameでモーダルを直接開く
-      const frame = document.getElementById('post_modal')
-      if (frame) {
-        frame.src = this.element.href.replace(/\?.*$/, '') // クエリパラメータを削除
-      }
-    } else {
-      // それ以外のページ: postsページに遷移してからモーダルを開く
-      window.location.href = '/posts?open_modal=new'
+    // ログイン済み: どのページからでもTurbo Frameでモーダルを開く
+    const frame = document.getElementById('post_modal')
+    if (frame) {
+      // クエリパラメータを削除してからTurbo Frameに読み込む
+      frame.src = this.element.href.replace(/\?.*$/, '')
     }
   }
 }

@@ -1,7 +1,4 @@
-<div class="container mx-auto px-4 pt-3"
-     data-controller="modal"
-     data-modal-frame-id-value="post_modal"
-     data-modal-new-post-path-value="<%= new_post_path %>">
+<div class="container mx-auto px-4 pt-3">
   <%= render 'search', q: @q, url: posts_path %>
 
   <!-- 掲示板一覧 -->
@@ -18,7 +15,3 @@
     <%= paginate @posts %>
   </div>
 </div>
-
-<!-- モーダル用のTurbo Frame -->
-<turbo-frame id="post_modal">
-</turbo-frame>
