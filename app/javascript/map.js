@@ -1,85 +1,372 @@
 let map;
 let geocoder;
 let currentMarker;
+let isInitialized = false;
 
 function initMap() {
     console.log("Google Maps API loaded");
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
-        center: { lat: 35.6812, lng: 139.7671 }
-    });
 
-    geocoder = new google.maps.Geocoder();
+    // geocoderがまだ初期化されていない場合のみ初期化
+    if (!geocoder && typeof google !== 'undefined' && google.maps) {
+        geocoder = new google.maps.Geocoder();
+    }
 
-    console.log(gon.addresses);
-    const address = gon.addresses || '東京駅';
-    geocodeAddress(address);
-    setupFormSubmission();
+    // DOM要素とgonの準備を待つ
+    setTimeout(function() {
+        initializeMapFeatures();
+    }, 100);
 }
 
-function setupFormSubmission() {
-    const form = document.getElementById('address-form');
-    const addressInput = document.getElementById('address-input');
-    
-    if (!form || !addressInput) {
+function initializeMapFeatures() {
+    const mapElement = document.getElementById("map");
+
+    if (!mapElement) {
+        console.log("Map element not found");
         return;
     }
-    
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        const newAddress = addressInput.value.trim();
-        
-        if (newAddress) {
-            geocodeAddress(newAddress);
-        } else {
-            alert("住所を入力してください");
+
+    // 既に初期化済みの場合は再初期化
+    if (isInitialized) {
+        console.log("Reinitializing map features");
+        // 既存のマーカーをクリア
+        if (currentMarker) {
+            currentMarker.setMap(null);
+            currentMarker = null;
         }
+    }
+
+    // 緯度経度が存在するかチェック（show/editページ用）
+    let initialCenter = { lat: 35.6812, lng: 139.7671 };
+    let initialZoom = 15;
+    let hasExistingLocation = false;
+    let existingLat = null;
+    let existingLng = null;
+
+    if (typeof gon !== 'undefined' && gon.latitude && gon.longitude) {
+        console.log("gon.latitude:", gon.latitude, "type:", typeof gon.latitude);
+        console.log("gon.longitude:", gon.longitude, "type:", typeof gon.longitude);
+
+        const lat = parseFloat(gon.latitude);
+        const lng = parseFloat(gon.longitude);
+
+        console.log("Parsed lat:", lat, "type:", typeof lat);
+        console.log("Parsed lng:", lng, "type:", typeof lng);
+
+        // 有効な緯度経度かチェック
+        if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+            console.log("Loading existing location:", lat, lng);
+            existingLat = lat;
+            existingLng = lng;
+            initialCenter = { lat: lat, lng: lng };
+            hasExistingLocation = true;
+        } else {
+            console.log("Invalid lat/lng values");
+        }
+    } else {
+        console.log("gon not defined or missing latitude/longitude");
+    }
+
+    // 地図の初期化
+    map = new google.maps.Map(mapElement, {
+        zoom: initialZoom,
+        center: initialCenter
     });
 
-    addressInput.addEventListener('keypress', function(event) {
+    // 既存の位置情報がある場合はマーカーを設置
+    if (hasExistingLocation && existingLat !== null && existingLng !== null) {
+        const location = new google.maps.LatLng(existingLat, existingLng);
+        updateMapLocation(location, gon.address || "保存された場所");
+    }
+
+    // 住所検索機能の初期化
+    setupAddressSearch();
+
+    // 現在地ボタンの初期化
+    setupCurrentLocationButton();
+
+    // 地図クリックリスナーの初期化
+    setupMapClickListener();
+
+    isInitialized = true;
+}
+
+// Turbo対応: DOMContentLoadedとturbo:loadの両方で初期化
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof google !== 'undefined' && google.maps) {
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+        initializeMapFeatures();
+    }
+});
+
+document.addEventListener('turbo:load', function() {
+    console.log("turbo:load event fired");
+    if (typeof google !== 'undefined' && google.maps) {
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+        // 少し遅延させてgonの値が確実に設定されるようにする
+        setTimeout(function() {
+            initializeMapFeatures();
+        }, 50);
+    }
+});
+
+// Turbo Frame対応: フレームのレンダリング後に初期化
+document.addEventListener('turbo:frame-render', function() {
+    if (typeof google !== 'undefined' && google.maps) {
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+        initializeMapFeatures();
+    }
+});
+
+// バリデーションエラー時の再レンダリング対応
+document.addEventListener('turbo:render', function() {
+    if (typeof google !== 'undefined' && google.maps) {
+        if (!geocoder) {
+            geocoder = new google.maps.Geocoder();
+        }
+        setTimeout(function() {
+            initializeMapFeatures();
+        }, 50);
+    }
+});
+
+// Turbo Streamでのレンダリング対応（バリデーションエラー時）
+document.addEventListener('turbo:before-stream-render', function() {
+    // 次のフレームで初期化を実行
+    setTimeout(function() {
+        if (typeof google !== 'undefined' && google.maps) {
+            if (!geocoder) {
+                geocoder = new google.maps.Geocoder();
+            }
+            initializeMapFeatures();
+        }
+    }, 100);
+});
+
+// ========== 住所検索機能（Enterキーで検索）==========
+function setupAddressSearch() {
+    const addressInput = document.getElementById('address-input');
+
+    if (!addressInput) {
+        console.log("Address input not found");
+        return;
+    }
+
+    // 既存のイベントリスナーを削除して重複を防ぐ
+    const newInput = addressInput.cloneNode(true);
+    addressInput.parentNode.replaceChild(newInput, addressInput);
+
+    // Enterキーで検索
+    newInput.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            form.dispatchEvent(new Event('submit'));
+            const searchQuery = newInput.value.trim();
+
+            if (searchQuery) {
+                searchAddress(searchQuery);
+            }
         }
     });
 }
 
-function geocodeAddress(address) {
+function searchAddress(query) {
     if (!geocoder) {
+        console.log("Geocoder not initialized");
         return;
     }
 
-    if (!address || address === '') {
-        address = '東京駅';
-    }
+    console.log("Searching for:", query);
 
     geocoder.geocode({
-        address: address,
+        address: query,
         region: 'JP'
     }, (results, status) => {
         if (status === "OK" && results && results.length > 0) {
             const location = results[0].geometry.location;
+            const address = results[0].formatted_address;
 
-            if (!map) {
-                return;
+            console.log("Found location:", location.lat(), location.lng());
+
+            // 住所欄を更新
+            const addressInput = document.getElementById('address-input');
+            if (addressInput) {
+                addressInput.value = address;
             }
 
-            if (currentMarker) {
-                currentMarker.setMap(null);
-            }
+            // 地図とマーカーを更新
+            updateMapLocation(location, address);
 
-            map.setCenter(location);
-
-            currentMarker = new google.maps.Marker({
-                map: map,
-                position: location,
-                title: results[0].formatted_address
-            });
+            // hidden fieldを更新
+            updateLatLngFields(location.lat(), location.lng());
         } else {
-            alert("住所が見つかりませんでした");
+            console.log("Geocoding failed:", status);
+            alert("住所が見つかりませんでした。別の検索語をお試しください。");
         }
     });
+}
+
+// ========== 現在地取得機能 ==========
+function setupCurrentLocationButton() {
+    const currentLocationBtn = document.getElementById('current-location-btn');
+
+    if (!currentLocationBtn) {
+        console.log("Current location button not found");
+        return;
+    }
+
+    // 既存のイベントリスナーを削除して重複を防ぐ
+    const newBtn = currentLocationBtn.cloneNode(true);
+    currentLocationBtn.parentNode.replaceChild(newBtn, currentLocationBtn);
+
+    newBtn.addEventListener('click', function() {
+        getCurrentLocation();
+    });
+}
+
+function getCurrentLocation() {
+    const addressInput = document.getElementById('address-input');
+    const currentLocationBtn = document.getElementById('current-location-btn');
+
+    if (!navigator.geolocation) {
+        alert('お使いのブラウザは位置情報取得に対応していません。');
+        return;
+    }
+
+    // ボタンをローディング状態に
+    const originalText = currentLocationBtn.innerHTML;
+    currentLocationBtn.disabled = true;
+    currentLocationBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 取得中...';
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = Number(position.coords.latitude);
+            const lng = Number(position.coords.longitude);
+
+            console.log("Current location:", lat, lng);
+            console.log("Type check - lat:", typeof lat, "lng:", typeof lng);
+
+            // Reverse Geocodingで住所を取得（LatLngLiteralを使用）
+            geocoder.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
+                if (status === 'OK' && results && results[0]) {
+                    const address = results[0].formatted_address;
+                    addressInput.value = address;
+
+                    // updateMapLocation用にLatLngオブジェクトを作成
+                    const location = new google.maps.LatLng(lat, lng);
+                    updateMapLocation(location, address);
+                    updateLatLngFields(lat, lng);
+                } else {
+                    alert('住所の取得に失敗しました。');
+                }
+
+                // ボタンを元に戻す
+                currentLocationBtn.disabled = false;
+                currentLocationBtn.innerHTML = originalText;
+            });
+        },
+        function(error) {
+            console.error('Geolocation error:', error);
+            let errorMessage = '現在地の取得に失敗しました。';
+
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = '位置情報の使用が許可されていません。ブラウザの設定を確認してください。';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = '位置情報が取得できませんでした。';
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = '位置情報の取得がタイムアウトしました。';
+                    break;
+            }
+
+            alert(errorMessage);
+
+            // ボタンを元に戻す
+            currentLocationBtn.disabled = false;
+            currentLocationBtn.innerHTML = originalText;
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+}
+
+// ========== 地図クリックで住所入力 ==========
+function setupMapClickListener() {
+    if (!map) {
+        console.log("Map not initialized");
+        return;
+    }
+
+    map.addListener('click', function(event) {
+        const clickedLocation = event.latLng;
+        const lat = clickedLocation.lat();
+        const lng = clickedLocation.lng();
+
+        console.log("Map clicked:", lat, lng);
+
+        // Reverse Geocodingで住所を取得
+        geocoder.geocode({ location: clickedLocation }, function(results, status) {
+            if (status === 'OK' && results && results[0]) {
+                const address = results[0].formatted_address;
+                const addressInput = document.getElementById('address-input');
+
+                if (addressInput) {
+                    addressInput.value = address;
+                }
+
+                updateMapLocation(clickedLocation, address);
+                updateLatLngFields(lat, lng);
+            } else {
+                alert('この場所の住所を取得できませんでした。');
+            }
+        });
+    });
+}
+
+// ========== ヘルパー関数: 地図とマーカーの更新 ==========
+function updateMapLocation(location, title) {
+    if (!map) {
+        return;
+    }
+
+    // 既存のマーカーを削除
+    if (currentMarker) {
+        currentMarker.setMap(null);
+    }
+
+    // 地図の中心を移動
+    map.setCenter(location);
+
+    // 新しいマーカーを配置
+    currentMarker = new google.maps.Marker({
+        map: map,
+        position: location,
+        title: title,
+        animation: google.maps.Animation.DROP
+    });
+}
+
+// ========== ヘルパー関数: hidden fieldの更新 ==========
+function updateLatLngFields(lat, lng) {
+    const latInput = document.getElementById('latitude-input');
+    const lngInput = document.getElementById('longitude-input');
+
+    if (latInput && lngInput) {
+        latInput.value = lat;
+        lngInput.value = lng;
+        console.log("Updated hidden fields:", lat, lng);
+    } else {
+        console.log("Latitude/Longitude input fields not found");
+    }
 }
 
 window.initMap = initMap;

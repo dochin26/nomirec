@@ -21,11 +21,16 @@ class PostsController < ApplicationController
     @post.shop.sakes.build
     @post.shop.foods.build
     @post.shop.shop_places.build
+
+    gon.latitude = nil
+    gon.longitude = nil
   end
 
   def show
-    @address = @post.shop.shop_places.pluck(:address).to_s
-    gon.addresses = @address
+    shop_place = @post.shop.shop_places.first
+    gon.latitude = shop_place&.latitude
+    gon.longitude = shop_place&.longitude
+    gon.address = shop_place&.address || ""
     set_post_meta_tags(@post)
   end
 
@@ -36,8 +41,10 @@ class PostsController < ApplicationController
     @post.shop.sake_names_input = @post.shop.sakes.pluck(:name).join(" ")
     @post.shop.food_names_input = @post.shop.foods.pluck(:name).join(" ")
 
-    @address = @post.shop.shop_places.pluck(:address).to_s
-    gon.addresses = @address
+    shop_place = @post.shop.shop_places.first
+    gon.latitude = shop_place&.latitude
+    gon.longitude = shop_place&.longitude
+    gon.address = shop_place&.address || ""
   end
 
   def create
@@ -132,7 +139,7 @@ class PostsController < ApplicationController
         :introduction,
         :sake_names_input,
         :food_names_input,
-        shop_places_attributes: [ :id, :address, :_destroy ]
+        shop_places_attributes: [ :id, :address, :latitude, :longitude, :_destroy ]
       ]
     )
   end
