@@ -48,6 +48,6 @@
     <turbo-frame id="post_modal">
     </turbo-frame>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :api_key) %>&callback=initMap" data-turbo-track="reload"></script>
   </body>
 </html>
