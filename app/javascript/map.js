@@ -143,6 +143,14 @@ document.addEventListener('turbo:load', function() {
     // ページ遷移時にフォームバリデーションフラグをリセット
     formValidationInitialized = false;
 
+    // 既存の地図とマーカーをクリアして完全にリセット
+    Object.keys(maps).forEach(function(mapId) {
+        if (maps[mapId] && maps[mapId].marker) {
+            maps[mapId].marker.setMap(null);
+        }
+    });
+    maps = {};
+
     if (typeof google !== 'undefined' && google.maps) {
         if (!geocoder) {
             geocoder = new google.maps.Geocoder();
