@@ -33,7 +33,12 @@ ja:
         name: "料理名"
       shop_place:
         address: "住所"
+        latitude: "緯度"
+        longitude: "経度"
     errors:
+      models:
+        shop_place:
+          location_required: "住所を検索するか、地図をクリックしてください"
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"
         restrict_dependent_destroy:

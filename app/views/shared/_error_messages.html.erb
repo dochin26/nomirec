@@ -10,7 +10,11 @@
         </h3>
         <ul class="list-disc list-inside space-y-1 text-sm">
           <% object.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
+            <% if msg.start_with?('Shop shop places') %>
+              <li>住所を検索するか、地図をクリックしてください</li>
+            <% else %>
+              <li><%= msg %></li>
+            <% end %>
           <% end %>
         </ul>
       </div>

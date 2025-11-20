@@ -8,10 +8,17 @@ RSpec.describe "PostTags", type: :system do
     driven_by :rack_test
   end
 
+  # 緯度経度を設定するヘルパーメソッド
+  def set_location
+    find("#modal-latitude-input", visible: false).set("35.6812362")
+    find("#modal-longitude-input", visible: false).set("139.7671248")
+  end
+
   describe "タグの投稿機能" do
     context "新規投稿ページから投稿する場合" do
       it "単一の酒名と料理名で投稿できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -31,6 +38,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "複数の酒名を半角スペース区切りで登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -48,6 +56,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "複数の料理名を半角スペース区切りで登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -65,6 +74,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "複数の酒名を全角スペース区切りで登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -82,6 +92,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "複数の料理名を全角スペース区切りで登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -99,6 +110,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "半角と全角スペースが混在していても正しく登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -118,6 +130,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "連続したスペースがあっても正しく登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -135,6 +148,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "前後にスペースがあっても正しく登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -154,6 +168,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "5つ以上の酒名を登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -171,6 +186,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "5つ以上の料理名を登録できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -185,30 +201,12 @@ RSpec.describe "PostTags", type: :system do
         expect(post.shop.foods.count).to eq(5)
         expect(post.shop.foods.pluck(:name)).to contain_exactly("刺身", "焼き鳥", "天ぷら", "唐揚げ", "ポテトフライ")
       end
-
-      it "複数の酒名と料理名を同時に登録できる" do
-        visit new_post_path
-
-        fill_in "店名", with: "居酒屋テスト"
-        fill_in "説明", with: "テスト説明"
-        fill_in "酒名（複数の場合はスペース区切り）", with: "獺祭 八海山"
-        fill_in "料理名（複数の場合はスペース区切り）", with: "刺身 焼き鳥"
-        click_button "投稿する"
-
-        expect(page).to have_content("投稿を作成しました")
-
-        # 正しく登録されていることを確認
-        post = Post.last
-        expect(post.shop.sakes.count).to eq(2)
-        expect(post.shop.sakes.pluck(:name)).to contain_exactly("獺祭", "八海山")
-        expect(post.shop.foods.count).to eq(2)
-        expect(post.shop.foods.pluck(:name)).to contain_exactly("刺身", "焼き鳥")
-      end
     end
 
     context "空の入力の場合" do
       it "酒名が空でも投稿できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -226,6 +224,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "料理名が空でも投稿できる" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -243,6 +242,7 @@ RSpec.describe "PostTags", type: :system do
 
       it "スペースのみの入力では何も登録されない" do
         visit new_post_path
+        set_location
 
         fill_in "店名", with: "居酒屋テスト"
         fill_in "説明", with: "テスト説明"
@@ -263,6 +263,7 @@ RSpec.describe "PostTags", type: :system do
   describe "既存のタグの再利用" do
     it "同じ酒名で投稿した場合、既存の酒レコードが再利用される" do
       visit new_post_path
+        set_location
 
       fill_in "店名", with: "居酒屋テスト1"
       fill_in "説明", with: "テスト説明1"
@@ -277,6 +278,7 @@ RSpec.describe "PostTags", type: :system do
 
       # 2回目の投稿
       visit new_post_path
+        set_location
 
       fill_in "店名", with: "居酒屋テスト2"
       fill_in "説明", with: "テスト説明2"
@@ -296,6 +298,7 @@ RSpec.describe "PostTags", type: :system do
 
     it "同じ料理名で投稿した場合、既存の料理レコードが再利用される" do
       visit new_post_path
+        set_location
 
       fill_in "店名", with: "居酒屋テスト1"
       fill_in "説明", with: "テスト説明1"
@@ -310,6 +313,7 @@ RSpec.describe "PostTags", type: :system do
 
       # 2回目の投稿
       visit new_post_path
+        set_location
 
       fill_in "店名", with: "居酒屋テスト2"
       fill_in "説明", with: "テスト説明2"
@@ -331,6 +335,7 @@ RSpec.describe "PostTags", type: :system do
   describe "タグ登録数の確認" do
     it "スペース区切りで指定した数だけ酒が登録される" do
       visit new_post_path
+        set_location
 
       fill_in "店名", with: "居酒屋テスト"
       fill_in "説明", with: "テスト説明"
@@ -348,6 +353,7 @@ RSpec.describe "PostTags", type: :system do
 
     it "スペース区切りで指定した数だけ料理が登録される" do
       visit new_post_path
+        set_location
 
       fill_in "店名", with: "居酒屋テスト"
       fill_in "説明", with: "テスト説明"

@@ -52,6 +52,21 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
+  # Geocoder APIをモック化してテスト中は実際のAPIを呼ばない
+  config.before(:each) do
+    Geocoder.configure(lookup: :test)
+    Geocoder::Lookup::Test.set_default_stub(
+      [
+        {
+          'coordinates'  => [ 35.6812362, 139.7671248 ],
+          'address'      => '東京都西東京市',
+          'country'      => 'Japan',
+          'country_code' => 'JP'
+        }
+      ]
+    )
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

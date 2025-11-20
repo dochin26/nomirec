@@ -1,6 +1,9 @@
 class ShopPlace < ApplicationRecord
   belongs_to :shop
 
+  # 緯度経度のバリデーション（カスタムバリデーションで1つのエラーのみ表示）
+  validate :location_must_be_set
+
   # 緯度経度が変更された場合、逆ジオコーディングで住所を取得
   before_save :reverse_geocode_address, if: :coordinates_changed?
 
@@ -13,6 +16,13 @@ class ShopPlace < ApplicationRecord
   end
 
   private
+
+  # 緯度経度が設定されているかチェック
+  def location_must_be_set
+    if latitude.blank? || longitude.blank?
+      errors.add(:base, I18n.t("activerecord.errors.models.shop_place.location_required"))
+    end
+  end
 
   # 緯度経度が変更されたかチェック
   def coordinates_changed?
