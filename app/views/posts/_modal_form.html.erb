@@ -12,7 +12,7 @@
 
         <!-- ヘッダー -->
         <div class="bg-gradient-to-r from-blue-500 to-pink-500 px-6 py-4 flex justify-between items-center">
-          <h3 class="text-xl font-bold text-white">新規投稿</h3>
+          <h3 class="text-xl font-bold text-white">投稿する</h3>
           <button type="button"
                   class="text-white hover:text-gray-200 transition-colors"
                   data-action="click->modal#close">
@@ -59,16 +59,35 @@
                 <%= shop_fields.fields_for :shop_places do |place_fields| %>
                   <div class="mb-3">
                     <%= place_fields.label :address, "住所検索", class: "block text-sm font-medium text-gray-700 mb-1" %>
-                    <%= place_fields.text_field :address, id: "address-input", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5", placeholder: "例: 東京都渋谷区〇〇 または 店舗名 (Enterで検索)" %>
-                    <p class="text-xs text-gray-500 mt-1">※住所または店舗名を入力してEnterキーを押してください</p>
+                    <div class="flex gap-2">
+                      <div class="relative flex-1">
+                        <%= place_fields.text_field :address, id: "modal-address-input", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10", placeholder: "例: 東京都渋谷区〇〇 または 店舗名" %>
+                        <button type="button"
+                                id="modal-address-clear-btn"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                          </svg>
+                        </button>
+                      </div>
+                      <button type="button"
+                              id="modal-address-search-btn"
+                              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition whitespace-nowrap">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        検索
+                      </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">※住所または店舗名を入力して検索ボタンを押してください</p>
 
                     <!-- 緯度経度のhidden fields -->
-                    <%= place_fields.hidden_field :latitude, id: "latitude-input" %>
-                    <%= place_fields.hidden_field :longitude, id: "longitude-input" %>
+                    <%= place_fields.hidden_field :latitude, id: "modal-latitude-input" %>
+                    <%= place_fields.hidden_field :longitude, id: "modal-longitude-input" %>
 
                     <!-- 現在地ボタン -->
                     <button type="button"
-                            id="current-location-btn"
+                            id="modal-current-location-btn"
                             class="mt-2 inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />

@@ -42,14 +42,50 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <%= place_fields.label :address, "住所", class: "text-sm font-semibold text-gray-700" %>
+                <%= place_fields.label :address, "住所検索", class: "text-sm font-semibold text-gray-700" %>
               </div>
-              <%= place_fields.text_field :address, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-3 transition mb-4" %>
+              <div class="flex gap-2 mb-2">
+                <div class="relative flex-1">
+                  <%= place_fields.text_field :address, id: "address-input", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-3 pr-10 transition", placeholder: "例: 東京都渋谷区〇〇 または 店舗名" %>
+                  <button type="button"
+                          id="address-clear-btn"
+                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+                <button type="button"
+                        id="address-search-btn"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg shadow-sm transition-all hover:shadow-md whitespace-nowrap">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  検索
+                </button>
+              </div>
+              <p class="text-xs text-gray-500 mb-3">※住所または店舗名を入力して検索ボタンを押してください</p>
+
+              <!-- 緯度経度のhidden fields -->
+              <%= place_fields.hidden_field :latitude, id: "latitude-input" %>
+              <%= place_fields.hidden_field :longitude, id: "longitude-input" %>
+
+              <!-- 現在地ボタン -->
+              <button type="button"
+                      id="current-location-btn"
+                      class="mb-4 inline-flex items-center gap-2 px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg shadow-sm transition-all hover:shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                現在地を取得
+              </button>
 
               <!-- Google Map -->
               <div class="rounded-xl overflow-hidden shadow-md">
-                <div id="map-edit" data-map-container data-map-id="map-edit" style="height: 300px; width: 100%;"></div>
+                <div id="map" style="height: 300px; width: 100%;"></div>
               </div>
+              <p class="text-xs text-gray-500 mt-2">※地図をクリックすると、その場所の住所が自動入力されます</p>
             </div>
           <% end %>
 
