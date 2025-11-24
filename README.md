@@ -63,7 +63,7 @@ https://nomireq.com/
 
 | 検索機能  |
 | ------------- |
-| [![](https://i.gyazo.com/17ce8bcd7082e476abfada53a539270a.gif)](https://gyazo.com/17ce8bcd7082e476abfada53a539270a) |
+| ![](https://i.gyazo.com/17ce8bcd7082e476abfada53a539270a.gif)|
 | オートコンプリート機能により、検索候補が表示されます。オートコンプリートは店舗名・料理・酒・場所から検索します。|
 
 # 機能一覧
