@@ -83,7 +83,7 @@ https://nomireq.com/
 | インフラ | fly.io |
 | データベースサーバー | TiDB (MySQL互換) |
 | ファイルサーバー | Cloudflare R2 |
-| アプリケーションサーバー | Kamal (Docker)・Puma |
+| アプリケーションサーバー | Puma |
 | バージョン管理ツール | GitHub・Git Flow |
 
 # 画面遷移図
