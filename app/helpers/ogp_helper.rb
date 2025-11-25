@@ -31,6 +31,29 @@ module OgpHelper
     end
   end
 
+  # トップページ（index）用のOGPメタタグを設定
+  def set_index_meta_tags
+    image_url = ActionController::Base.helpers.asset_url("nomireq_logo.jpg")
+
+    set_meta_tags(
+      title: "NomireQ - 特徴的なお酒や料理を共有しよう！",
+      description: "特徴的なお酒や料理を共有しよう！ NomireQ",
+      og: {
+        title: "NomireQ",
+        description: "特徴的なお酒や料理を共有しよう！ NomireQ",
+        type: "website",
+        url: root_url,
+        image: image_url
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: "NomireQ",
+        description: "特徴的なお酒や料理を共有しよう！ NomireQ",
+        image: image_url
+      }
+    )
+  end
+
   # OGPメタタグを設定
   def set_post_meta_tags(post)
     image_url = ogp_image_url(post)
